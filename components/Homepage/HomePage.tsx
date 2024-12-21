@@ -6,6 +6,7 @@ import CoreValue from './CoreValue'
 import WhyJoin from './WhyJoin'
 import OurBenefit from './OurBenefit'
 import JobOpening from './JobOpening'
+import StayInTouch from './StayInTouch'
 
 const HomePage = () => {
     return (
@@ -17,6 +18,7 @@ const HomePage = () => {
             <WhyJoin />
             <OurBenefit />
             <JobOpening />
+            <StayInTouch />
         </main>
     )
 }
