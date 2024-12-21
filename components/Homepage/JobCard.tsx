@@ -20,7 +20,7 @@ const JobCard = () => {
                         <span className='bg-[#F9D627] px-2 py-0.5 text-sm rounded-2xl'>NEW</span>
                     </div>
                     <div className='flex gap-2 items-center'>
-                        <p className='text-[#631F61] font-medium text-xl'>Red's Diner</p>
+                        <p className='text-[#631F61] font-medium text-xl'>Red&apos;s Diner</p>
                         <p className='text-sm text-[#1D1D1F]'>#Food & Beverage </p>
                     </div>
                     <div className='text-[#1A212B] space-y-2 mt-2'>

@@ -18,7 +18,7 @@ const About = () => {
                     <h2 className='font-bold font-caveat text-[#D9292F] text-2xl md:text-3xl'>
                         About Business
                     </h2>
-                    <p className='leading-[24px] text-center mt-3'>Enjoy breakfast all day Red's Diner! Farm-fresh ingredients and made-in-house. We believe in creating hearty meals that anyone can enjoy and feel like part of the family.</p>
+                    <p className='leading-[24px] text-center mt-3'>Enjoy breakfast all day Red&apos;s Diner! Farm-fresh ingredients and made-in-house. We believe in creating hearty meals that anyone can enjoy and feel like part of the family.</p>
                     <div className='border-t mt-3 pt-3 space-y-2'>
                         <span className='flex items-center gap-1'>
                             <Image src={"/Images/industry.png"} width={20} height={20} alt='industry' className='mr-1' />
@@ -81,7 +81,7 @@ const About = () => {
                         </h3>
                         <div className='flex justify-center mt-5'>
                             <div>
-                              <span className='w-[]'></span>  
+                                <span className='w-[]'></span>
                                 <Image src={"/Images/father-love.png"} width={200} height={200} alt='drop-resume' className='mr-1' />
                             </div>
                             <span>
