@@ -12,6 +12,10 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        sans: ["DM Sans", "sans-serif"],
+        caveat: ["Caveat", "cursive"],
+      },
     },
   },
   plugins: [],
