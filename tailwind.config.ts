@@ -11,10 +11,15 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        red:"#D9292F",
+        yellow:"#F9D627",
+        slate:"#454A5F",
+        sky:"#0483F8"
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
         caveat: ["Caveat", "cursive"],
+        architects:["Architects Daughter", "serif"]
       },
     },
   },
