@@ -3,9 +3,9 @@ import React from 'react'
 
 const Directions = () => {
   return (
-    <section className='pb-5 md:pb-7 font-sans px-[1rem] md:px-[3rem] lg:px-[6rem] mt-6 p-3'>
+    <section className='pb-5 md:pb-6 font-sans px-[1rem] md:px-[3rem] lg:px-[6rem] mt-7 p-3'>
       <div className='bg-white px-4 py-6 rounded-2xl'>
-        <h2 className=' font-caveat text-red font-bold text-[1.5rem] pb-6'>Oops! Seems like you have not had a profile...</h2>
+        <h2 className=' font-caveat text-red font-bold text-2xl md:text-3xl pb-6'>Oops! Seems like you have not had a profile...</h2>
 
         <div className=' font-sans text-[0.9rem]'>
           <h3 className=' mb-4'>
