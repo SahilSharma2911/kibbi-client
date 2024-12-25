@@ -54,11 +54,17 @@ const Stepper: React.FC = () => {
                   <div
                     className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${currentStep > step.id
                       ? "bg-blue-500 border-blue-500 text-white"
-                      : "text-[14px] border-gray-300"
+                      : "text-[12px] border-gray-300"
                       }`}
                   >
                     {currentStep > step.id ? (
-                      <span>&#10003;</span>
+                      <span>
+                        <img
+                          src="/Images/tick2.png"
+                          alt={`Step ${formatStepNumber(step.id)}`}
+                          className="w-3.5 h-3.5"
+                        />
+                      </span>
                     ) : (
                       <span>{formatStepNumber(step.id)}</span>
                     )}
@@ -67,18 +73,25 @@ const Stepper: React.FC = () => {
               </div>
 
               {/* Step Label */}
-              <div className="lg:absolute static lg:-bottom-7 lg:-ml-10 mt-1 lg:mt-0 whitespace-nowrap text-center">
+              <div className="lg:absolute static lg:-bottom-7 lg:mt-0 mt-1 whitespace-nowrap text-center">
                 <span
                   className={`text-sm ${currentStep > step.id
                     ? "text-blue-500"
                     : currentStep === step.id
                       ? ""
                       : ""
+                    } ${step.label === "Your preferences (Optional)"
+                      ? "lg:-ml-16"
+                      : step.label === "Drop Resume"
+                        ? "lg:-ml-6"
+                        : "lg:-ml-10"
                     }`}
                 >
                   {step.label}
                 </span>
               </div>
+
+
             </div>
 
             {/* Connector Line - Horizontal for lg and above, Vertical for below lg */}

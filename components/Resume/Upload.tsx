@@ -5,6 +5,7 @@ import Stepper from "./Stepper";
 import { FaFilePdf } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Resume {
   name: string;
@@ -48,13 +49,13 @@ const Upload = () => {
   };
 
   return (
-    <section className="pb-5 md:pb-7 font-sans px-[1rem] md:px-[3rem] lg:px-[6rem]">
-      <div className="bg-white px-4 py-7 rounded-2xl">
+    <section className="pb-10 font-sans px-[1rem] md:px-[3rem] lg:px-[6rem]">
+      <div className="bg-white px-4 py-5 md:py-7 rounded-2xl">
         <Stepper />
 
         <div className="font-sans text-[1rem] mt-6 md:mt-10">
-          <h3>Upload Your Resume</h3>
-          <div className="mt-7">
+          <h2 className="font-medium">Upload Your Resume</h2>
+          <div className="mt-4 md:mt-7">
             <div className="border-dashed border-2 border-gray-300 p-6 text-center">
               <input
                 type="file"
@@ -69,12 +70,15 @@ const Upload = () => {
                 <Image src={"/Images/pdf-upload.png"} width={30} height={30} alt="pdf" />
                 <span className="mt-2">
                   Drop your resume here, or{" "}
-                  <span className="hover:underline text-sky">Click to upload</span>
+                  <span className="hover:underline text-sky font-medium">Click to upload</span>
+                </span>
+                <span className="mt-2 text-[#737992] text-sm">
+                  For the best results, upload your resume in PDF, DOC, DOCX format. If you must use an image, ensure the text is clear
                 </span>
               </label>
             </div>
-            <div className="mt-4">
-              <h2>Or select your current resume</h2>
+            <div className="mt-6">
+              <h2 className="font-medium">Or select your current resume</h2>
               {resumes.map((resume, index) => (
                 <div
                   key={index}
@@ -113,7 +117,7 @@ const Upload = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="text-gray-500 flex flex-col items-end gap-1 relative">
+                    <div className="text-gray-800 flex flex-col items-end gap-1 relative">
                       <button
                         className="text-slate-500"
                         onClick={() => setShowModalIndex(showModalIndex === index ? null : index)}
@@ -121,11 +125,12 @@ const Upload = () => {
                         <BsThreeDotsVertical />
                       </button>
                       {showModalIndex === index && (
-                        <div className="absolute top-6 right-0 bg-white shadow-lg rounded-md p-2 z-10">
+                        <div className="absolute top-5 -right-4 bg-white shadow-xl border rounded-md p-2 z-10">
                           <button
                             onClick={() => handleRemoveResume(index)}
-                            className="text-red-500 hover:bg-red-50 px-4 py-1 rounded w-full text-left text-sm"
+                            className="text-red-500 hover:bg-red-50 px-3.5 py-1.5 rounded w-full justify-center items-center text-sm flex gap-1.5"
                           >
+                            <Image src={"/Images/delete.png"} width={17} height={17} alt="pdf" />
                             Remove
                           </button>
                         </div>
@@ -135,6 +140,13 @@ const Upload = () => {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="w-full flex justify-end items-center mt-7">
+              <Link href={"/resume/confirm-your-profile"}>
+                <button className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white">
+                  Next
+                </button>
+              </Link>
             </div>
           </div>
         </div>
