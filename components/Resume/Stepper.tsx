@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 interface Step {
   id: number;
@@ -8,8 +9,13 @@ interface Step {
 }
 
 const Stepper: React.FC = () => {
+  const pathname = usePathname();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  console.log(setCurrentStep);
+  useEffect(() => {
+    if (pathname === "/resume/confirm-your-profile") {
+      setCurrentStep(2);
+    }
+  }, [pathname]);
   const steps: Step[] = [
     { id: 1, label: "Create Your Profile" },
     { id: 2, label: "Confirm Your Profile" },
@@ -30,7 +36,7 @@ const Stepper: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center font-sans">
       {/* Stepper */}
       <div className="flex lg:flex-row flex-col lg:items-center">
         {steps.map((step, index) => (
@@ -80,7 +86,7 @@ const Stepper: React.FC = () => {
               <>
                 {/* Horizontal line for lg and above */}
                 <div
-                  className={`hidden lg:block w-[5rem] md:w-[10rem] xl:w-[14rem] h-1 ${currentStep > step.id
+                  className={`hidden lg:block w-[5rem] md:w-[10rem] xl:w-[14rem] h-[3px] ${currentStep > step.id
                     ? "bg-blue-500"
                     : "border-t-[3px] border-dotted border-gray-300"
                     }`}
