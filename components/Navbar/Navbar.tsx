@@ -4,7 +4,7 @@ import React from 'react'
 
 const Navbar = () => {
     return (
-        <section className='px-[1rem] md:px-[3rem] lg:px-[6rem] py-5 flex justify-between items-center bg-white shadow-lg'>
+        <section className='px-[1rem] md:px-[3rem] lg:px-[6rem] py-5 flex justify-between items-center bg-white'>
             <div>
                 <Link href={"/"}>
                     <Image src={"/Images/logo.png"} width={100} height={100} alt='logo' />

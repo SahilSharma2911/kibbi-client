@@ -5,9 +5,8 @@ import Upload from './Upload'
 const Resume = () => {
   return (
     <main>
-      <Directions/>
-      <Upload/>
-      
+      <Directions />
+      <Upload />
     </main>
   )
 }

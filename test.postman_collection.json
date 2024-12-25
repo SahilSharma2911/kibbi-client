@@ -1,0 +1,35 @@
+{
+	"info": {
+		"_postman_id": "f7f08746-0ba9-49c2-8ae0-27088595f81f",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28872600"
+	},
+	"item": [
+		{
+			"name": "localhost:3001",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/wppc-0021/Projects/resume-parse-gpt/test_parse_resume/resume/9 - LeHoangThao_Java_Developer_CV.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3001",
+					"host": [
+						"localhost"
+					],
+					"port": "3001"
+				}
+			},
+			"response": []
+		}
+	]
+}
