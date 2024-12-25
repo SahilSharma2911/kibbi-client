@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Stepper from "./Stepper";
-import { IoMdCloudUpload } from "react-icons/io";
 import { FaFilePdf } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoImageOutline } from "react-icons/io5";
