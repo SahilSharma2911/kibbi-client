@@ -7,7 +7,6 @@ const Resume = () => {
     <main>
       <Directions/>
       <Upload/>
-      
     </main>
   )
 }

@@ -48,12 +48,12 @@ const Stepper: React.FC = () => {
                   <img
                     src="/Images/current-step.png"
                     alt={`Step ${formatStepNumber(step.id)}`}
-                    className="w-8 h-8"
+                    className="w-8 h-8 "
                   />
                 ) : (
                   <div
                     className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${currentStep > step.id
-                      ? "bg-blue-500 border-blue-500 text-white"
+                      ? "bg-[#0162DD] border-blue-500 text-white"
                       : "text-[12px] border-gray-300"
                       }`}
                   >
@@ -62,7 +62,7 @@ const Stepper: React.FC = () => {
                         <img
                           src="/Images/tick2.png"
                           alt={`Step ${formatStepNumber(step.id)}`}
-                          className="w-3.5 h-3.5"
+                          className="w-3 h-3 "
                         />
                       </span>
                     ) : (
@@ -76,7 +76,7 @@ const Stepper: React.FC = () => {
               <div className="lg:absolute static lg:-bottom-7 lg:mt-0 mt-1 whitespace-nowrap text-center">
                 <span
                   className={`text-sm ${currentStep > step.id
-                    ? "text-blue-500"
+                    ? "text-[#0162DD]"
                     : currentStep === step.id
                       ? ""
                       : ""
@@ -100,7 +100,7 @@ const Stepper: React.FC = () => {
                 {/* Horizontal line for lg and above */}
                 <div
                   className={`hidden lg:block w-[5rem] md:w-[10rem] xl:w-[14rem] h-[3px] ${currentStep > step.id
-                    ? "bg-blue-500"
+                    ? "bg-[#0162DD]"
                     : "border-t-[3px] border-dotted border-gray-300"
                     }`}
                 ></div>
@@ -108,7 +108,7 @@ const Stepper: React.FC = () => {
                 {/* Vertical line for below lg */}
                 <div
                   className={`lg:hidden h-8 w-1 my-2 mx-auto ${currentStep > step.id
-                    ? "bg-blue-500"
+                    ? "bg-[#0162DD]"
                     : "border-l-[3px] border-dotted border-gray-300"
                     }`}
                 ></div>

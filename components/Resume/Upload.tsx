@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import Stepper from "./Stepper";
 import { FaFilePdf } from "react-icons/fa6";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { BsThreeDotsVertical, BsX } from "react-icons/bs";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface Resume {
   name: string;
@@ -118,23 +119,55 @@ const Upload = () => {
                       </div>
                     </div>
                     <div className="text-gray-800 flex flex-col items-end gap-1 relative">
+
+
                       <button
                         className="text-slate-500"
                         onClick={() => setShowModalIndex(showModalIndex === index ? null : index)}
                       >
-                        <BsThreeDotsVertical />
-                      </button>
-                      {showModalIndex === index && (
-                        <div className="absolute top-5 -right-4 bg-white shadow-xl border rounded-md p-2 z-10">
-                          <button
-                            onClick={() => handleRemoveResume(index)}
-                            className="text-red-500 hover:bg-red-50 px-3.5 py-1.5 rounded w-full justify-center items-center text-sm flex gap-1.5"
+                        {showModalIndex === index ? (
+                          <motion.span
+                            key="cross"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
                           >
-                            <Image src={"/Images/delete.png"} width={17} height={17} alt="pdf" />
-                            Remove
-                          </button>
-                        </div>
-                      )}
+                            <BsX />
+                          </motion.span>
+                        ) : (
+                          <motion.span
+                            key="dots"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            <BsThreeDotsVertical />
+                          </motion.span>
+                        )}
+                      </button>
+
+
+                      <AnimatePresence>
+                        {showModalIndex === index && (
+                          <motion.div
+                            className="absolute top-5 -right-4 bg-white shadow-xl border rounded-md p-2 z-10"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <button
+                              onClick={() => handleRemoveResume(index)}
+                              className="text-red-500 hover:bg-red-50 px-3.5 py-1.5 rounded w-full justify-center items-center text-sm flex gap-1.5"
+                            >
+                              <Image src={"/Images/delete.png"} width={17} height={17} alt="pdf" />
+                              Remove
+                            </button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                       <span className="text-[0.6rem]">{resume.size}</span>
                     </div>
                   </div>
