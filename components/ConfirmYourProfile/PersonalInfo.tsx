@@ -1,7 +1,9 @@
+import { useResumeData } from '@/context/ResumeDataContext';
 import Image from 'next/image'
 import React from 'react'
 
 const PersonalInfo = () => {
+  const { resumeData } = useResumeData();
   return (
     <section className=' w-full h-auto  bg-[#FFFBFB] rounded-xl text-[0.9rem] p-3 md:p-6 text-[#1A212B]'>
       <div className=' flex justify-between items-center gap-3'>
@@ -22,7 +24,7 @@ const PersonalInfo = () => {
         <div className=' flex items-center gap-6'>
           <img src="/Images/person.png" alt="" className=' size-20 rounded-full ' />
           <div className='space-y-0.5'>
-            <h3 className='font-medium text-base text-black'>Howard Ong</h3>
+            <h3 className='font-medium text-base text-black'>{resumeData?.Name}</h3>
             <p>Email: example@gmail.com</p>
             <p>Phone number: 0123456789</p>
           </div>

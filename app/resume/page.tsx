@@ -1,10 +1,12 @@
 import Resume from '@/components/Resume/Resume'
-import React from 'react'
+import React, { Suspense } from 'react'
 
-const page = () => {
+const Page = () => {
   return (
-    <Resume />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Resume />
+    </Suspense>
   )
 }
 
-export default page
+export default Page
