@@ -1,52 +1,11 @@
-import { useResumeData } from '@/context/ResumeDataContext';
-import Image from 'next/image';
-import React, { useState } from 'react';
-import { FaPlus } from 'react-icons/fa6';
+import Image from 'next/image'
+import React, { useState } from 'react'
+import { FaPlus } from 'react-icons/fa6'
 
 const Experience = () => {
-  const { resumeData, setResumeData } = useResumeData();
-  console.log("The work experience are:::", resumeData?.["Work Experience"]);
-  const [experiences, setExperiences] = useState(resumeData?.["Work Experience"] || []);
+
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleInputChange = (index: number, field: string, value: any) => {
-    const updatedExperiences = [...experiences];
-    updatedExperiences[index] = { ...updatedExperiences[index], [field]: value };
-    setExperiences(updatedExperiences);
-  };
-
-  const handleDelete = (index: number) => {
-    const updatedExperiences = experiences.filter((_, i) => i !== index);
-    setExperiences(updatedExperiences);
-  };
-
-  const handleAddExperience = () => {
-    setExperiences([...experiences, {
-      position: "",
-      companyName: "",
-      location: "",
-      startDate: "",
-      endDate: "",
-      currentlyWork: false,
-      responsibilities: ""
-    }]);
-  };
-
-  const handleSave = () => {
-    if (resumeData) {
-      const updatedResumeData = {
-        ...resumeData,
-        "Work Experience": experiences,
-      };
-      setResumeData(updatedResumeData);
-    }
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setExperiences(resumeData?.["Work Experience"] || []);
-    setIsEditing(false);
-  };
 
   return (
     <section className="w-full h-auto bg-[#FFFBFB] rounded-xl text-[0.9rem] p-3 md:p-6 text-[#585E68]">
