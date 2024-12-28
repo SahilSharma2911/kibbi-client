@@ -1,8 +1,12 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { FaPlus } from 'react-icons/fa6'
 
 const Experience = () => {
+
+  const [isEditing, setIsEditing] = useState(false);
+
+
   return (
     <section className='w-full h-auto  bg-[#FFFBFB] rounded-xl text-[0.9rem] p-3 md:p-6 text-[#585E68]'>
       <div className=' flex justify-between items-center gap-3'>
