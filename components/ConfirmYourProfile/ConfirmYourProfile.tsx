@@ -125,30 +125,59 @@ const ConfirmYourProfile = () => {
                             exit={{ opacity: 0 }}
                         >
                             <motion.div
-                                className="bg-white rounded-lg p-6 w-96"
+                                className="bg-white rounded-lg  w-[50%] "
                                 variants={popupVariants}
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
                                 transition={{ duration: 0.3 }}
                             >
-                                <h2 className="text-lg font-semibold mb-4">Confirm Your Profile</h2>
-                                <p className="mb-4">Are you sure you want to upload another resume?</p>
-                                <div className="flex justify-end gap-4">
+                                <h2 className="text-lg font-sans text-red font-semibold mb-4 ml-6 mt-6 text-[1.5rem] ">Are You Sure? This Will Override Your Data.</h2>
+                                <hr />
+                                <div className='bg-white px-4 pb-6 pt-1 rounded-2xl'>
+
+                                    <div className=' font-sans text-[0.9rem]'>
+                                        <h3 className=' mb-4'>
+                                        You’ve selected a new resume. If you continue, our system will:
+                                        </h3>
+
+                                        {/* points  */}
+                                        <ul className=' font-normal space-y-4'>
+                                            <li className=' flex items-center gap-3'>
+                                                <span className=' w-6 h-6 p-2 font-architects bg-yellow rounded-full flex items-center justify-center font-extrabold'>01.</span>
+                                                Parse the new resume
+                                            </li>
+                                            <li className=' flex items-center gap-3'>
+                                                <span className=' w-6 h-6 p-2 font-architects bg-yellow rounded-full flex items-center justify-center font-extrabold'>02.</span>
+                                                Override your current profile data with the updated information from the resume
+                                            </li>
+                                            <li className=' flex items-center gap-3'>
+                                                <span className=' w-6 h-6 p-2 font-architects bg-yellow rounded-full flex items-center justify-center font-extrabold'>03.</span>
+                                                Any existing edits in your profile will be replaced
+                                            </li>
+                                        </ul>
+
+                                        <p className=' mt-4'>
+                                        If you’d like to keep your current profile, cancel and upload the resume later.
+                                        </p>
+
+                                    </div>
+                                </div>
+                                <div className="flex justify-end gap-4 p-4">
                                     <button
+                                        onClick={ closePopup }
+                                        className="text-sm bg-[#979797] hover:bg-[#868686] transition duration-300 rounded-lg py-2.5 px-5 text-white"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white"
                                         onClick={() => {
                                             handleUploadAnother();
                                             closePopup();
                                         }}
-                                        className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
                                     >
-                                        Upload Another Resume
-                                    </button>
-                                    <button
-                                        className="bg-gray-300 hover:bg-gray-400 transition duration-300 rounded-lg py-2 px-4"
-                                        onClick={closePopup}
-                                    >
-                                        Cancel
+                                        Confirm and Continue
                                     </button>
                                 </div>
                             </motion.div>
