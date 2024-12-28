@@ -86,12 +86,6 @@ const Skills = () => {
                             </div>
 
                         ))}
-                        {/* <button
-                            onClick={handleAddSkill}
-                            className="mt-2 text-blue-500 hover:underline"
-                        >
-                            Add More
-                        </button> */}
                         <div className=' flex items-center ml-4 mt-4 gap-3 cursor-pointer'
                             onClick={handleAddSkill}>
                             <span className=' bg-red w-6 h-6 rounded-full text-white flex justify-center items-center '>
@@ -121,12 +115,6 @@ const Skills = () => {
                                 <li key={index}>{skill}</li>
                             ))}
                         </ul>
-                        {/* <button
-                            onClick={() => setIsEditing(true)}
-                            className="mt-3 text-blue-500 hover:underline"
-                        >
-                            Edit Skills
-                        </button> */}
                     </div>
                 )}
 
