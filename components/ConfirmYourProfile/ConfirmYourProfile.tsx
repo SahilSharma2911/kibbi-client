@@ -14,6 +14,12 @@ import axios from 'axios'
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from 'next/navigation'
 import { useResumeData } from '@/context/ResumeDataContext'
+import { MdMailOutline } from "react-icons/md";
+import { LuPhoneCall } from "react-icons/lu";
+import { FaLocationDot } from "react-icons/fa6";
+import { IoEarth } from "react-icons/io5"
+import { PiDotOutlineFill } from "react-icons/pi";
+
 
 const ConfirmYourProfile = () => {
     const { setResumeData } = useResumeData();
@@ -80,17 +86,239 @@ const ConfirmYourProfile = () => {
             <section className="bg-white px-4 py-7 rounded-2xl">
                 <h1 className=' font-caveat text-red font-bold text-2xl md:text-3xl pb-6'>Confirm your profile</h1>
                 <Stepper />
+
                 <div className='w-full mt-7 md:mt-12 flex flex-col lg:flex-row gap-8'>
+
                     {/* left side  */}
                     <div className='w-full lg:w-[50%] space-y-3 font-sans font-medium md:px-2'>
                         <h3 className='font-medium'>View Resume</h3>
-                        <Image
-                            src={"/Images/resume.png"}
-                            alt='logo'
-                            width={500}
-                            height={500}
-                            className="object-contain w-full border-8 rounded-md border-[#D9D9D9]"
-                        />
+                        <div className="object-contain w-full border-8 rounded-md border-[#D9D9D9] p-6 flex  gap-10 ">
+                            {/* left side  */}
+                            <div className=' flex flex-col gap-4 font-Poppins w-6/12'>
+
+                                {/* Name  */}
+                                <div>
+                                    <h3 className=' font-Poppins  text-[2rem] font-extrabold'>HOWARD ONG</h3>
+                                    <p className=' font-Poppins text-[1.1rem]'>Financial Analyst</p>
+                                </div>
+
+                                {/* My Contact  */}
+                                <div>
+
+                                    <h3 className="text-[0.8rem] text-[#a28b91] underline decoration-2 decoration-[#a28b91] underline-offset-8 font-bold">My Contact</h3>
+                                    <ul className=' mt-4 text-[0.6rem]'>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <MdMailOutline /> </span>
+                                            hello@youremail.com
+                                        </li>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <LuPhoneCall /> </span>
+                                            +123-456-9560
+                                        </li>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <FaLocationDot /> </span>
+                                            hello@youremail.com
+                                        </li>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <IoEarth /> </span>
+                                            hello@youremail.com
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+                                {/* Hard skill  */}
+                                <div>
+                                    <h3 className="text-[0.8rem] text-[#a28b91] underline decoration-2 decoration-[#a28b91] underline-offset-8 font-bold">Hard Skill</h3>
+                                    <ul className=' list-disc  mt-4 text-[0.6rem] ml-3'>
+                                        <li>
+                                            Financial modeling and reporting
+                                        </li>
+                                        <li>
+                                            Data mining and analysis
+                                        </li>
+                                        <li>
+                                            Financial accounting
+                                        </li>
+                                        <li>
+                                            Business Valuation
+                                        </li>
+                                        <li>
+                                            Advanced SAS proficiency
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                {/* Education Background  */}
+                                <div>
+                                    <h3 className="text-[0.8rem] text-[#a28b91] underline decoration-2 decoration-[#a28b91] underline-offset-8 font-bold">Education Background</h3>
+                                    <div className=' mt-4'>
+                                        <div className=' flex gap-2'>
+                                            <span>
+                                                <PiDotOutlineFill />
+                                            </span>
+                                            <div className=' flex flex-col font-Poppins font-light text-[0.6rem] '>
+                                                <span className=' font-semibold'>
+                                                    Borcelle Business School
+                                                </span>
+                                                Masters in Accounting
+                                                <br />
+                                                Completed in 2016
+                                            </div>
+
+                                        </div>
+
+                                        <div className=' flex gap-2'>
+                                            <span>
+                                                <PiDotOutlineFill />
+                                            </span>
+                                            <div className=' flex flex-col font-Poppins font-light text-[0.6rem] '>
+                                                <span className=' font-semibold'>
+                                                    Borcelle Business School
+                                                </span>
+                                                Masters in Accounting
+                                                <br />
+                                                Completed in 2016
+                                            </div>
+
+                                        </div>
+
+                                        <div className=' flex gap-2'>
+                                            <span>
+                                                <PiDotOutlineFill />
+                                            </span>
+                                            <div className=' flex flex-col font-Poppins font-light text-[0.6rem] '>
+                                                <span className=' font-semibold'>
+                                                    Borcelle Business School
+                                                </span>
+                                                Masters in Accounting
+                                                <br />
+                                                Completed in 2016
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                {/* About Me  */}
+                                <div >
+
+                                    <h3 className="text-[0.8rem] text-[#a28b91] underline decoration-2 decoration-[#a28b91] underline-offset-8 font-bold">About Me</h3>
+                                    <p className=' mt-4 text-[0.6rem] w-9/12'>
+                                        Dedicated and detail-oriented Financial Analyst with 10
+                                        years of experience. Eager to apply proven-budget maximization skills for Bank of Brocelle in monitoring, maintaining, and completing client billing and
+                                        reconciliations. Special interest in achieving the
+                                        millennial market and helping with retirement and
+                                        general financial planning.
+                                    </p>
+
+                                </div>
+                            </div>
+
+                            {/* right side  */}
+                            <div className=' w-6/12'>
+
+
+
+
+                                {/* Professional Experience  */}
+                                <div className=' mt-8'>
+
+                                    <h3 className="text-[0.8rem] text-[#a28b91] underline decoration-2 decoration-[#a28b91] underline-offset-8 font-bold">Professional Experience</h3>
+
+                                    <div className=' text-[0.6rem] '>
+
+                                        {/* first experience  */}
+
+                                        <div>
+
+                                            <p className=' mt-4 font-semibold'>Ginyard International Co. | Financial Analyst 2020 - Present</p>
+
+                                            <h3>Key responsibilities:</h3>
+                                            <ul className=' list-disc ml-6'>
+                                                <li>Analyze current and past financial data</li>
+                                                <li>Analyze current and past financial data</li>
+                                                <li>Analyze current and past financial data</li>
+                                                <li>Analyze current and past financial data</li>
+                                                <li>Analyze current and past financial data</li>
+                                                <li>Analyze current and past financial data</li>
+                                            </ul>
+                                        </div>
+
+                                        {/* second experience  */}
+
+                                        <div>
+
+                                            <p className=' mt-4 font-semibold'>Ingoude Company | Junior/Investment Analyst
+                                                2015 - 2020
+                                            </p>
+
+                                            <h3>Key responsibilities:</h3>
+                                            <ul className=' list-disc ml-6'>
+                                                <li>Looked at financial performance and identified trends</li>
+                                                <li>Explored various investment opportunities</li>
+                                            </ul>
+                                        </div>
+
+                                        {/* third experience  */}
+
+                                        <div>
+
+                                            <p className=' mt-4 font-semibold'>Timmerman Industries | Financial Analyst Intern
+                                                2012 - 2015
+                                            </p>
+
+                                            <h3>Key responsibilities:</h3>
+                                            <ul className=' list-disc ml-6'>
+                                                <li>Analyzed financial data</li>
+                                                <li>Observed financial performance and identified trends</li>
+                                                <li>
+                                                    Prepared reports on the above information and reported the insights
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+
+                                    </div>
+
+
+
+
+                                </div>
+
+                                {/* About Me  */}
+                                <div className=' mt-8'>
+
+                                    <h3 className="text-[0.8rem] text-[#a28b91] underline decoration-2 decoration-[#a28b91] underline-offset-8 font-bold">About Me</h3>
+                                    <ul className=' mt-4 text-[0.6rem]'>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <MdMailOutline /> </span>
+                                            hello@youremail.com
+                                        </li>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <LuPhoneCall /> </span>
+                                            +123-456-9560
+                                        </li>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <FaLocationDot /> </span>
+                                            hello@youremail.com
+                                        </li>
+                                        <li className=' flex items-center gap-1'>
+                                            <span> <IoEarth /> </span>
+                                            hello@youremail.com
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
                     </div>
                     {/* right side  */}
                     <div className='w-full lg:w-[50%] mt-3 md:mt-10 space-y-3'>
@@ -138,7 +366,7 @@ const ConfirmYourProfile = () => {
 
                                     <div className=' font-sans text-[0.9rem]'>
                                         <h3 className=' mb-4'>
-                                        You’ve selected a new resume. If you continue, our system will:
+                                            You’ve selected a new resume. If you continue, our system will:
                                         </h3>
 
                                         {/* points  */}
@@ -158,14 +386,14 @@ const ConfirmYourProfile = () => {
                                         </ul>
 
                                         <p className=' mt-4'>
-                                        If you’d like to keep your current profile, cancel and upload the resume later.
+                                            If you’d like to keep your current profile, cancel and upload the resume later.
                                         </p>
 
                                     </div>
                                 </div>
                                 <div className="flex justify-end gap-4 p-4">
                                     <button
-                                        onClick={ closePopup }
+                                        onClick={closePopup}
                                         className="text-sm bg-[#979797] hover:bg-[#868686] transition duration-300 rounded-lg py-2.5 px-5 text-white"
                                     >
                                         Cancel

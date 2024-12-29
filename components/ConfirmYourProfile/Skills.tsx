@@ -8,6 +8,7 @@ const Skills = () => {
     console.log("the skills are:::", resumeData?.Skills);
     const [skills, setSkills] = useState(resumeData?.Skills || []);
     const [isEditing, setIsEditing] = useState(false);
+    
     const handleInputChange = (index: number, value: string) => {
         const updatedSkills = [...skills];
         updatedSkills[index] = value;

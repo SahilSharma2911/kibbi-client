@@ -15,12 +15,14 @@ export default {
         yellow:"#F9D627",
         slate:"#454A5F",
         sky:"#0483F8",
-        blue:"#065196"
+        blue:"#065196",
+        resumeHeading:"#AC9196"
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
         caveat: ["Caveat", "cursive"],
-        architects:["Architects Daughter", "serif"]
+        architects:["Architects Daughter", "serif"],
+        Poppins: ["Poppins", "serif"]
       },
     },
   },
