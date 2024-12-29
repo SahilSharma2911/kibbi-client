@@ -8,13 +8,42 @@ interface ContactInformation {
   LinkedIn: string;
 }
 
+interface Education {
+  instituteName: string;
+  certificateOrDegree: string;
+  degreeName: string;
+  graduationYear: string;
+  currentlyEnrolled: boolean;
+}
+
+interface WorkExperience {
+  position: string;
+  companyName: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  currentlyWork: boolean;
+  responsibilities: string;
+}
+
+interface Certification {
+  documentType: string;
+  documentName: string;
+  issuer: string;
+  issueDate: string;
+  expiryDate: string;
+  certificateImage: string;
+}
+
 interface ResumeData {
-  Name: string;
+  "First Name": string;
+  "Last Name": string;
+  summary: string;
   "Contact Information": ContactInformation;
   Skills: string[];
-  Education: string[];
-  "Work Experience": string[];
-  Certifications: string[];
+  Education: Education[];
+  "Work Experience": WorkExperience[];
+  Certifications: Certification[];
   Languages: string[];
 }
 

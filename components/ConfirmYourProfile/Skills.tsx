@@ -2,13 +2,17 @@ import { useResumeData } from '@/context/ResumeDataContext';
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { FaPlus } from 'react-icons/fa6'
+import { motion } from "framer-motion";
 
-const Skills = () => {
+interface SkillsProps {
+    isEditing: boolean;
+    setIsEditing: (value: boolean) => void;
+}
+
+const Skills: React.FC<SkillsProps> = ({ isEditing, setIsEditing }) => {
     const { resumeData, setResumeData } = useResumeData();
     console.log("the skills are:::", resumeData?.Skills);
     const [skills, setSkills] = useState(resumeData?.Skills || []);
-    const [isEditing, setIsEditing] = useState(false);
-    
     const handleInputChange = (index: number, value: string) => {
         const updatedSkills = [...skills];
         updatedSkills[index] = value;
@@ -49,19 +53,24 @@ const Skills = () => {
                     Skills
                 </p>
                 {!isEditing && (
-                    <span className='cursor-pointer'>
+                    <motion.span
+                        className="cursor-pointer"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    >
                         <Image
-                            src={"/Images/pencil.png"}
+                            src="/Images/pencil.png"
                             alt="logo"
                             width={20}
                             height={20}
                             onClick={() => setIsEditing(true)}
                         />
-                    </span>
+                    </motion.span>
                 )}
             </div>
 
-            <div className={`mt-3 ${isEditing ? "border border-[#C9C9C9] rounded-xl p-2 md:p-4" : ""}`}>
+            <div className={`mt-3 ${isEditing ? "border border-[#C9C9C9] rounded-[10px] p-2 md:p-4" : ""}`}>
                 {isEditing ? (
                     <div>
                         {skills.map((skill, index) => (
@@ -81,18 +90,12 @@ const Skills = () => {
                                         type="text"
                                         value={skill}
                                         onChange={(e) => handleInputChange(index, e.target.value)}
-                                        className="border border-[#C9C9C9] p-2.5 rounded-lg w-full outline-none"
+                                        className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none"
                                     />
                                 </div>
                             </div>
 
                         ))}
-                        {/* <button
-                            onClick={handleAddSkill}
-                            className="mt-2 text-blue-500 hover:underline"
-                        >
-                            Add More
-                        </button> */}
                         <div className=' flex items-center ml-4 mt-4 gap-3 cursor-pointer'
                             onClick={handleAddSkill}>
                             <span className=' bg-red w-6 h-6 rounded-full text-white flex justify-center items-center '>
@@ -122,12 +125,6 @@ const Skills = () => {
                                 <li key={index}>{skill}</li>
                             ))}
                         </ul>
-                        {/* <button
-                            onClick={() => setIsEditing(true)}
-                            className="mt-3 text-blue-500 hover:underline"
-                        >
-                            Edit Skills
-                        </button> */}
                     </div>
                 )}
 
