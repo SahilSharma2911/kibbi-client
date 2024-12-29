@@ -5,7 +5,7 @@ import Stepper from '../Resume/Stepper'
 import PersonalInfo from './PersonalInfo'
 import Education from './Education'
 import Experience from './Experience'
-import Image from 'next/image'
+// import Image from 'next/image'
 import Skills from './Skills'
 import LicenseCertification from './LicenseCertification'
 import Link from 'next/link'
@@ -15,6 +15,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from 'next/navigation'
 import { useResumeData } from '@/context/ResumeDataContext'
 import toast from 'react-hot-toast'
+import { MdMailOutline } from 'react-icons/md'
+import { LuPhoneCall } from 'react-icons/lu'
+import { FaLocationDot } from 'react-icons/fa6'
+import { IoEarth } from 'react-icons/io5'
+import { PiDotOutlineFill } from 'react-icons/pi'
 
 const ConfirmYourProfile = () => {
     const { setResumeData } = useResumeData();
