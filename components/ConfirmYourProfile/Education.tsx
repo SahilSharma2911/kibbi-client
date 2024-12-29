@@ -251,7 +251,7 @@ const Education: React.FC<EducationProps> = ({ isEditing, setIsEditing }) => {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-lg  w-[50%] "
+              className="bg-white rounded-lg w-[95%] lg:w-[50%] "
               variants={popupVariants}
               initial="hidden"
               animate="visible"
@@ -259,10 +259,10 @@ const Education: React.FC<EducationProps> = ({ isEditing, setIsEditing }) => {
               transition={{ duration: 0.3 }}
             >
               <div className='relative text-lg font-sans text-red font-semibold mb-4 mx-6 mt-6 text-[1.5rem] w-full'>
-                <h4 className="">Are you sure you want to remove this education entry?</h4>
+                <h4 className="w-[85%]">Are you sure you want to remove this education entry?</h4>
                 <button
                   onClick={closePopup}
-                  className='absolute top-0 right-12 text-black hover:text-gray-600 font-bold text-xl'
+                  className='absolute top-1 right-12 text-black hover:text-gray-600 font-bold text-xl'
                   aria-label="Close"
                 >
                   <LuX />
