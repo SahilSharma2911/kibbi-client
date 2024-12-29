@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { ResumeProvider } from "@/context/ResumeContext";
 import { ResumeDataProvider } from "@/context/ResumeDataContext";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <ResumeProvider>
           <ResumeDataProvider>
+            <Toaster position="top-center" reverseOrder={false} />
             <Navbar />
             {children}
             <Footer />

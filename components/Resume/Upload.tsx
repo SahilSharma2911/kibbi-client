@@ -9,6 +9,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useResumeContext } from "@/context/ResumeContext";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 const Upload = () => {
   const searchParams = useSearchParams()
@@ -20,7 +21,19 @@ const Upload = () => {
     showModalIndex,
     setShowModalIndex,
   } = useResumeContext();
-  console.log("sdfasdf", resumes)
+  const selectedResume = selectedResumeIndex !== null ? resumes[selectedResumeIndex] : null;
+
+  const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!selectedResume) {
+      e.preventDefault();
+      toast("Please select your resume!", {
+        icon: "📄",
+        style: {
+          borderRadius: "10px",
+        },
+      });
+    }
+  };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -178,13 +191,13 @@ const Upload = () => {
             <div className="w-full flex justify-end items-center mt-7">
               {isReturningFromConfirm ? (
                 <>
-                  {/* <Link href={"/resume/confirm-your-profile"}>
+                  <Link href={"#"}>
                     <button
                       className="text-sm bg-[#979797] hover:bg-[#868686] transition duration-300 rounded-lg py-2.5 px-5 text-white mr-3"
                     >
                       Resume My Work
                     </button>
-                  </Link> */}
+                  </Link>
                   <Link href={"/resume/confirm-your-profile"}>
                     <button className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white ">
                       Continue
@@ -195,8 +208,11 @@ const Upload = () => {
               ) : (
                 <>
 
-                  <Link href={"/resume/confirm-your-profile"}>
-                    <button className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white">
+                  <Link href={"/resume/confirm-your-profile"} passHref>
+                    <button
+                      onClick={handleNextClick}
+                      className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white"
+                    >
                       Next
                     </button>
                   </Link>

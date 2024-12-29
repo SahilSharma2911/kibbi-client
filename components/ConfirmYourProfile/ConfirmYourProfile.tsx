@@ -14,6 +14,7 @@ import axios from 'axios'
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from 'next/navigation'
 import { useResumeData } from '@/context/ResumeDataContext'
+import toast from 'react-hot-toast'
 
 const ConfirmYourProfile = () => {
     const { setResumeData } = useResumeData();
@@ -23,6 +24,29 @@ const ConfirmYourProfile = () => {
     }
     const { resumes, selectedResumeIndex } = useResumeContext();
     const selectedResume = selectedResumeIndex !== null ? resumes[selectedResumeIndex] : null;
+
+    const [isEditingList, setIsEditingList] = useState([false, false, false, false, false]);
+
+    const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (isEditingList.includes(true)) {
+            e.preventDefault();
+            toast("Please finish editing all fields before proceeding", {
+                icon: "⚠️",
+                style: {
+                    borderRadius: "10px",
+                },
+            });
+        }
+    };
+
+    const handleEditingChange = (index: number, value: boolean) => {
+        setIsEditingList((prevState) => {
+            const newState = [...prevState];
+            newState[index] = value;
+            return newState;
+        });
+    };
+
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const openPopup = () => setIsPopupOpen(true);
@@ -35,6 +59,7 @@ const ConfirmYourProfile = () => {
     };
 
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         const parseResume = async () => {
@@ -56,6 +81,7 @@ const ConfirmYourProfile = () => {
                 console.log("API Response:", response.data);
             } catch (error) {
                 console.error("Failed to parse resume:", error);
+                setError(true);
             } finally {
                 setIsLoading(false);
             }
@@ -64,12 +90,51 @@ const ConfirmYourProfile = () => {
         parseResume();
     }, [selectedResume]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     if (isLoading) {
         return (
-            <main className="flex items-center justify-center min-h-screen bg-gray-100">
+            <main className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gray-100">
                 <div className="text-center">
-                    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status"></div>
-                    <p className="text-gray-700 mt-4">Loading your profile...</p>
+                    <div className="flex justify-center items-center">
+                        <svg
+                            className="animate-spin h-8 w-8 text-blue-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                            ></circle>
+                            <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                        </svg>
+                    </div>
+
+                    <p className="font-medium text-lg mt-4">Loading your profile...</p>
+                </div>
+            </main>
+        );
+    }
+
+    if (error) {
+        return (
+            <main className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gray-100">
+                <div className="text-center">
+                    <p className="font-medium text-lg">Something went wrong. Please try again.</p>
+                    <Link href="/resume" className='mt-4 px-4 py-2 hover:underline text-sky rounded '>
+                        Back to Confirm Resume
+                    </Link>
                 </div>
             </main>
         );
@@ -94,11 +159,26 @@ const ConfirmYourProfile = () => {
                     </div>
                     {/* right side  */}
                     <div className='w-full lg:w-[50%] mt-3 md:mt-10 space-y-3'>
-                        <PersonalInfo />
-                        <Education />
-                        <Experience />
-                        <Skills />
-                        <LicenseCertification />
+                        <PersonalInfo
+                            isEditing={isEditingList[0]}
+                            setIsEditing={(value) => handleEditingChange(0, value)}
+                        />
+                        <Education
+                            isEditing={isEditingList[1]}
+                            setIsEditing={(value) => handleEditingChange(1, value)}
+                        />
+                        <Experience
+                            isEditing={isEditingList[2]}
+                            setIsEditing={(value) => handleEditingChange(2, value)}
+                        />
+                        <Skills
+                            isEditing={isEditingList[3]}
+                            setIsEditing={(value) => handleEditingChange(3, value)}
+                        />
+                        <LicenseCertification
+                            isEditing={isEditingList[4]}
+                            setIsEditing={(value) => handleEditingChange(4, value)}
+                        />
                     </div>
                 </div>
                 <div className="w-full flex justify-end items-center mt-7 gap-3">
@@ -109,7 +189,8 @@ const ConfirmYourProfile = () => {
                         Upload Another Resume
                     </button>
                     <Link href={"/resume/confirm-your-profile"}>
-                        <button className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white">
+                        <button className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white"
+                            onClick={handleNextClick}>
                             Next
                         </button>
                     </Link>
@@ -132,13 +213,13 @@ const ConfirmYourProfile = () => {
                                 exit="exit"
                                 transition={{ duration: 0.3 }}
                             >
-                                <h2 className="text-lg font-sans text-red font-semibold mb-4 ml-6 mt-6 text-[1.5rem] ">Are You Sure? This Will Override Your Data.</h2>
+                                <h2 className="text-lg font-sans text-red font-semibold mb-4 mx-6 mt-6 text-[1.5rem] ">Are You Sure? This Will Override Your Data.</h2>
                                 <hr />
                                 <div className='bg-white px-4 pb-6 pt-1 rounded-2xl'>
 
                                     <div className=' font-sans text-[0.9rem]'>
                                         <h3 className=' mb-4'>
-                                        You’ve selected a new resume. If you continue, our system will:
+                                            You’ve selected a new resume. If you continue, our system will:
                                         </h3>
 
                                         {/* points  */}
@@ -158,14 +239,14 @@ const ConfirmYourProfile = () => {
                                         </ul>
 
                                         <p className=' mt-4'>
-                                        If you’d like to keep your current profile, cancel and upload the resume later.
+                                            If you’d like to keep your current profile, cancel and upload the resume later.
                                         </p>
 
                                     </div>
                                 </div>
-                                <div className="flex justify-end gap-4 p-4">
+                                <div className="flex justify-end gap-4 p-6">
                                     <button
-                                        onClick={ closePopup }
+                                        onClick={closePopup}
                                         className="text-sm bg-[#979797] hover:bg-[#868686] transition duration-300 rounded-lg py-2.5 px-5 text-white"
                                     >
                                         Cancel

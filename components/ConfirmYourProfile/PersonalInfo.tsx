@@ -1,10 +1,30 @@
 import { useResumeData } from '@/context/ResumeDataContext';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
-const PersonalInfo = () => {
+interface ContactInfo {
+  Phone: string;
+  Email: string;
+  LinkedIn: string;
+  Address: string;
+}
+
+interface PersonalInfo {
+  summary: string;
+  contactInfo: ContactInfo;
+  firstName: string;
+  lastName: string;
+}
+
+interface PersonalInfoProps {
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+}
+
+const PersonalInfo: React.FC<PersonalInfoProps> = ({ isEditing, setIsEditing }) => {
   const { resumeData, setResumeData } = useResumeData();
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
   const [personalInfo, setPersonalInfo] = useState({
     summary: resumeData?.summary || "",
     contactInfo: resumeData?.["Contact Information"] || {
@@ -15,13 +35,13 @@ const PersonalInfo = () => {
     },
     firstName: resumeData?.["First Name"] || "",
     lastName: resumeData?.["Last Name"] || "",
-    city: "Ho Chi Minh",
-    province: "Binh Thanh",
-    postalCode: "",
-    eligibleToWork: "Yes"
   });
 
-  const handleInputChange = (field, value, nestedField = null) => {
+  const handleInputChange = (
+    field: keyof PersonalInfo,
+    value: string,
+    nestedField?: keyof ContactInfo
+  ) => {
     if (nestedField) {
       setPersonalInfo(prev => ({
         ...prev,
@@ -63,10 +83,6 @@ const PersonalInfo = () => {
       },
       firstName: resumeData?.["First Name"] || "",
       lastName: resumeData?.["Last Name"] || "",
-      city: "Ho Chi Minh",
-      province: "Binh Thanh",
-      postalCode: "",
-      eligibleToWork: "Yes"
     });
     setIsEditing(false);
   };
@@ -81,7 +97,12 @@ const PersonalInfo = () => {
           Personal Information
         </p>
         {!isEditing && (
-          <span className="cursor-pointer">
+          <motion.span
+            className="cursor-pointer"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
             <Image
               src="/Images/pencil.png"
               alt="logo"
@@ -89,117 +110,98 @@ const PersonalInfo = () => {
               height={20}
               onClick={() => setIsEditing(true)}
             />
-          </span>
+          </motion.span>
         )}
       </div>
 
-      <div className="mt-4 flex flex-col gap-2">
-        <h3>Profile Photo</h3>
-
-        <div className="flex items-center gap-6">
-          <img src="/Images/person.png" alt="" className="size-20 rounded-full" />
-          <div className="space-y-0.5">
-            {isEditing ? (
-              <div className="space-y-2">
+      <div className=" flex flex-col gap-2">
+        {isEditing ? (
+          <div className="space-y-3 mt-4">
+            {/* First Name and Last Name row */}
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="w-full md:w-1/2">
+                <label className="block mb-1 text-[#1D1D1F]">First Name</label>
                 <input
                   type="text"
                   value={personalInfo.firstName}
                   onChange={(e) => handleInputChange('firstName', e.target.value)}
                   placeholder="First Name"
-                  className="border border-[#C9C9C9] p-2 rounded-lg w-full outline-none"
+                  className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none"
                 />
+              </div>
+              <div className="w-full md:w-1/2">
+                <label className="block mb-1 text-[#1D1D1F]">Last Name</label>
                 <input
                   type="text"
                   value={personalInfo.lastName}
                   onChange={(e) => handleInputChange('lastName', e.target.value)}
                   placeholder="Last Name"
-                  className="border border-[#C9C9C9] p-2 rounded-lg w-full outline-none"
+                  className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none"
                 />
               </div>
-            ) : (
-              <h3 className="font-medium text-base text-black">
-                {personalInfo.firstName} {personalInfo.lastName}
-              </h3>
-            )}
-            {isEditing ? (
-              <div className="space-y-2">
-                <input
-                  type="email"
-                  value={personalInfo.contactInfo.Email}
-                  onChange={(e) => handleInputChange('contactInfo', e.target.value, 'Email')}
-                  placeholder="Email"
-                  className="border border-[#C9C9C9] p-2 rounded-lg w-full outline-none"
-                />
-                <input
-                  type="tel"
-                  value={personalInfo.contactInfo.Phone}
-                  onChange={(e) => handleInputChange('contactInfo', e.target.value, 'Phone')}
-                  placeholder="Phone"
-                  className="border border-[#C9C9C9] p-2 rounded-lg w-full outline-none"
-                />
-              </div>
-            ) : (
-              <>
-                <p>Email: {personalInfo.contactInfo.Email}</p>
-                <p>Phone number: {personalInfo.contactInfo.Phone}</p>
-              </>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {isEditing ? (
-          <div className="space-y-4 mt-4">
+            {/* Professional Summary */}
             <div>
-              <label className="block mb-2">Professional Summary</label>
+              <label className="block mb-1 text-[#1D1D1F]">Summary</label>
               <textarea
                 value={personalInfo.summary}
                 onChange={(e) => handleInputChange('summary', e.target.value)}
-                className="border border-[#C9C9C9] p-2.5 rounded-lg w-full outline-none min-h-[100px]"
+                placeholder="Write your professional summary"
+                className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none min-h-[130px]"
               />
             </div>
 
+            {/* Address */}
             <div>
-              <label className="block mb-2">Address</label>
+              <label className="block mb-1 text-[#1D1D1F]">Address</label>
               <input
                 type="text"
                 value={personalInfo.contactInfo.Address}
                 onChange={(e) => handleInputChange('contactInfo', e.target.value, 'Address')}
-                className="border border-[#C9C9C9] p-2.5 rounded-lg w-full outline-none"
+                placeholder="Enter your address"
+                className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-2">City</label>
+            {/* Email and Phone row */}
+            <div className="flex flex-col md:flex-row gap-5">
+              <div className="w-full md:w-1/2">
+                <label className="block mb-1 text-[#1D1D1F]">Email</label>
                 <input
-                  type="text"
-                  value={personalInfo.city}
-                  onChange={(e) => handleInputChange('city', e.target.value)}
-                  className="border border-[#C9C9C9] p-2.5 rounded-lg w-full outline-none"
+                  type="email"
+                  value={personalInfo.contactInfo.Email}
+                  onChange={(e) => handleInputChange('contactInfo', e.target.value, 'Email')}
+                  placeholder="Enter your email"
+                  className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none"
                 />
               </div>
-              <div>
-                <label className="block mb-2">Province</label>
+              <div className="w-full md:w-1/2">
+                <label className="block mb-1 text-[#1D1D1F]">Phone</label>
                 <input
-                  type="text"
-                  value={personalInfo.province}
-                  onChange={(e) => handleInputChange('province', e.target.value)}
-                  className="border border-[#C9C9C9] p-2.5 rounded-lg w-full outline-none"
+                  type="tel"
+                  value={personalInfo.contactInfo.Phone}
+                  onChange={(e) => handleInputChange('contactInfo', e.target.value, 'Phone')}
+                  placeholder="Enter your phone number"
+                  className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block mb-2">LinkedIn</label>
+            {/* LinkedIn */}
+            <div className="w-full md:w-1/2">
+              <label className="block mb-1 text-[#1D1D1F]">LinkedIn</label>
               <input
                 type="text"
                 value={personalInfo.contactInfo.LinkedIn}
                 onChange={(e) => handleInputChange('contactInfo', e.target.value, 'LinkedIn')}
-                className="border border-[#C9C9C9] p-2.5 rounded-lg w-full outline-none"
+                placeholder="Enter your LinkedIn profile"
+                className="border border-[#C9C9C9] p-2.5 rounded-[10px] w-full outline-none"
               />
             </div>
 
-            <div className="flex gap-2 w-full justify-end mt-4">
+            {/* Buttons */}
+            <div className="flex gap-2 w-full justify-end mt-6">
               <button
                 onClick={handleCancel}
                 className="px-4 py-2 border border-[#8C92AB] rounded-lg hover:bg-gray-100 transition-all ease-in-out duration-300"
@@ -215,16 +217,24 @@ const PersonalInfo = () => {
             </div>
           </div>
         ) : (
-          <ul className="list-disc flex flex-col gap-2 mt-1 pl-7">
-            <li>{personalInfo.summary}</li>
-            <li>Address: {personalInfo.contactInfo.Address}</li>
-            <li className="flex gap-10">
-              <li>City: {personalInfo.city}</li>
-              <li>Province: {personalInfo.province}</li>
-            </li>
-            <li>LinkedIn: {personalInfo.contactInfo.LinkedIn}</li>
-            <li>Are you eligible to work in Canada? {personalInfo.eligibleToWork}</li>
-          </ul>
+          <div className='mt-3'>
+            <div className='space-y-1'>
+              {(personalInfo.firstName || personalInfo.lastName) && (
+                <h3 className="font-medium text-base text-black">
+                  {personalInfo.firstName} {personalInfo.lastName}
+                </h3>
+              )}
+              {personalInfo?.contactInfo?.Email && <p>Email: {personalInfo.contactInfo.Email}</p>}
+              {personalInfo?.contactInfo?.Phone && <p>Phone number: {personalInfo.contactInfo.Phone}</p>}
+            </div>
+            <ul className="list-disc flex flex-col gap-2 pl-7 mt-2">
+              {personalInfo.summary && <li>{personalInfo.summary}</li>}
+              {personalInfo?.contactInfo?.Address && <li>Address: {personalInfo.contactInfo.Address}</li>}
+              {personalInfo?.contactInfo?.LinkedIn && <li>LinkedIn: {personalInfo.contactInfo.LinkedIn}</li>}
+            </ul>
+          </div>
+
+
         )}
       </div>
     </section>
