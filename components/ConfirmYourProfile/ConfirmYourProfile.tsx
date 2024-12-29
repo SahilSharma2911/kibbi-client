@@ -5,7 +5,7 @@ import Stepper from '../Resume/Stepper'
 import PersonalInfo from './PersonalInfo'
 import Education from './Education'
 import Experience from './Experience'
-import Image from 'next/image'
+// import Image from 'next/image'
 import Skills from './Skills'
 import LicenseCertification from './LicenseCertification'
 import Link from 'next/link'
@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from 'next/navigation'
 import { useResumeData } from '@/context/ResumeDataContext'
 import toast from 'react-hot-toast'
+import ViewResume from './ViewResume'
 
 const ConfirmYourProfile = () => {
     const { setResumeData } = useResumeData();
@@ -31,7 +32,7 @@ const ConfirmYourProfile = () => {
         if (isEditingList.includes(true)) {
             e.preventDefault();
             toast("Please finish editing all fields before proceeding", {
-                icon: "⚠️",
+                icon: "⚠️ ",
                 style: {
                     borderRadius: "10px",
                 },
@@ -64,6 +65,7 @@ const ConfirmYourProfile = () => {
     useEffect(() => {
         const parseResume = async () => {
             if (!selectedResume?.file) {
+                setError(true);
                 setIsLoading(false);
                 return;
             }
@@ -147,15 +149,16 @@ const ConfirmYourProfile = () => {
                 <Stepper />
                 <div className='w-full mt-7 md:mt-12 flex flex-col lg:flex-row gap-8'>
                     {/* left side  */}
-                    <div className='w-full lg:w-[50%] space-y-3 font-sans font-medium md:px-2'>
+                    <div className='w-full lg:w-[50%] space-y-3 font-sans font-medium md:px-2 hidden lg:block'>
                         <h3 className='font-medium'>View Resume</h3>
-                        <Image
+                        {/* <Image
                             src={"/Images/resume.png"}
                             alt='logo'
                             width={500}
                             height={500}
                             className="object-contain w-full border-8 rounded-md border-[#D9D9D9]"
-                        />
+                        /> */}
+                        <ViewResume />
                     </div>
                     {/* right side  */}
                     <div className='w-full lg:w-[50%] mt-3 md:mt-10 space-y-3'>
@@ -206,7 +209,7 @@ const ConfirmYourProfile = () => {
                             exit={{ opacity: 0 }}
                         >
                             <motion.div
-                                className="bg-white rounded-lg  w-[50%] "
+                                className="bg-white rounded-lg w-[95%] lg:w-[50%] "
                                 variants={popupVariants}
                                 initial="hidden"
                                 animate="visible"

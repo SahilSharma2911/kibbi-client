@@ -11,16 +11,17 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        red:"#D9292F",
-        yellow:"#F9D627",
-        slate:"#454A5F",
-        sky:"#0483F8",
-        blue:"#065196"
+        red: "#D9292F",
+        yellow: "#F9D627",
+        slate: "#454A5F",
+        sky: "#0483F8",
+        blue: "#065196",
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
         caveat: ["Caveat", "cursive"],
-        architects:["Architects Daughter", "serif"]
+        architects: ["Architects Daughter", "serif"],
+        poppins: ["Poppins", "serif"],
       },
     },
   },
