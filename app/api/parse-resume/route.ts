@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// put request
 export async function PUT(request: NextRequest) {
   try {
     const jsonData = await request.json();
