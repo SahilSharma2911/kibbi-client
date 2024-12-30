@@ -139,7 +139,7 @@ const Skills: React.FC<SkillsProps> = ({ isAnyEditing, isEditing, setIsEditing }
                             <div>
                                 <div>
                                     <ul className="list-disc flex flex-col gap-2 mt-1 ml-7">
-                                        {skills.map((skill, index) => (
+                                        {skills.filter(skill => skill).map((skill, index) => (
                                             <li key={index}>{skill}</li>
                                         ))}
                                     </ul>

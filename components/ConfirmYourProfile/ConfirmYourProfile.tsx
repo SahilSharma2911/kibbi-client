@@ -74,9 +74,13 @@ const ConfirmYourProfile = () => {
 
     const [isEditingList, setIsEditingList] = useState([false, false, false, false, false]);
     const [isAnyEditing, setIsAnyEditing] = useState(false);
+
     useEffect(() => {
-        // Update `isAnyEditing` whenever `isEditingList` changes
-        setIsAnyEditing(isEditingList.some((isEditing) => isEditing));
+        // Check if any field is true in isEditingList
+        const anyEditing = isEditingList.some((isEditing) => isEditing);
+
+        // If none are true, set isAnyEditing to false, otherwise true
+        setIsAnyEditing(anyEditing);
     }, [isEditingList]);
 
     const handleNextClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -239,9 +243,9 @@ const ConfirmYourProfile = () => {
             <section className="bg-white px-4 py-7 rounded-2xl">
                 <h1 className=' font-caveat text-red font-bold text-2xl md:text-3xl pb-6'>Confirm your profile</h1>
                 <Stepper />
-                <div className='w-full mt-7 md:mt-12 flex flex-col lg:flex-row gap-8'>
+                <div className='w-full mt-7 md:mt-12 flex flex-col lg:flex-row gap-3 md:gap-8'>
                     {/* left side  */}
-                    <div className='w-full lg:w-[50%] space-y-3 font-sans font-medium md:px-2 hidden lg:block'>
+                    <div className='w-full lg:w-[50%] space-y-3 font-sans font-medium md:px-2 '>
                         <h3 className='font-medium'>View Resume</h3>
                         {/* <Image
                             src={"/Images/resume.png"}

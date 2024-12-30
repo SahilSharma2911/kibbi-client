@@ -221,38 +221,37 @@ const LicenseCertification: React.FC<CertificationProps> = ({ isAnyEditing, isEd
                             <div>
                                 <div>
                                     {certifications?.map((cert, index) => (
-                                        <div key={index} className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
-                                            {cert.documentName && (
-                                                <p className="font-medium text-base text-black">{cert.documentName}</p>
-                                            )}
-                                            {cert.issuer && (
-                                                <p className="text-[#585E68] font-medium">{cert.issuer}</p>
-                                            )}
-                                            {(cert.issueDate || cert.expiryDate) && (
-                                                <p className="text-[#585E68] font-medium">
-                                                    {cert.issueDate}
-                                                    {cert.issueDate && cert.expiryDate && " - "}
-                                                    {cert.expiryDate}
-                                                    {cert.issueDate && cert.expiryDate && (() => {
-                                                        const parseDate = (dateString: string): Date => {
-                                                            const [month, year] = dateString.split(" ");
-                                                            return new Date(`${month} 1, ${year}`);
-                                                        };
+                                        <div key={index}>
+                                            {(cert.documentName || cert.issuer || cert.issueDate || cert.expiryDate) && (
+                                                <div className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
+                                                    {cert.documentName && (
+                                                        <p className="font-medium text-base text-black">{cert.documentName}</p>
+                                                    )}
+                                                    {cert.issuer && (
+                                                        <p className="text-[#585E68] font-medium">{cert.issuer}</p>
+                                                    )}
+                                                    {(cert.issueDate || cert.expiryDate) && (
+                                                        <p className="text-[#585E68] font-medium">
+                                                            {cert.issueDate}
+                                                            {cert.issueDate && cert.expiryDate && " - "}
+                                                            {cert.expiryDate}
+                                                            {cert.issueDate && cert.expiryDate && (() => {
+                                                                const parseDate = (dateString: string): Date => {
+                                                                    const [month, year] = dateString.split(" ");
+                                                                    return new Date(`${month} 1, ${year}`);
+                                                                };
 
-                                                        const issueDate = parseDate(cert.issueDate);
-                                                        const expiryDate = parseDate(cert.expiryDate);
+                                                                const issueDate = parseDate(cert.issueDate);
+                                                                const expiryDate = parseDate(cert.expiryDate);
 
-                                                        const yearGap = ((expiryDate.getTime() - issueDate.getTime()) / (1000 * 60 * 60 * 24 * 365)).toFixed(1);
+                                                                const yearGap = ((expiryDate.getTime() - issueDate.getTime()) / (1000 * 60 * 60 * 24 * 365)).toFixed(1);
 
-                                                        return ` (${yearGap} years)`;
-                                                    })()}
-                                                </p>
+                                                                return ` (${yearGap} years)`;
+                                                            })()}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             )}
-                                            {/* {cert.certificateImage && (
-                                    <div className="mt-1">
-                                        <Image src={cert.certificateImage} alt="certificate" width={100} height={100} />
-                                    </div>
-                                )} */}
                                         </div>
                                     ))}
                                 </div>

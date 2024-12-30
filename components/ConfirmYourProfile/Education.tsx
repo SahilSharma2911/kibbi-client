@@ -223,22 +223,26 @@ const Education: React.FC<EducationProps> = ({ isAnyEditing, isEditing, setIsEdi
             ) : (
               <div className="space-y-3">
                 {education?.map((edu, index) => (
-                  <div key={index} className="border border-[#C9C9C9] rounded-xl p-3.5 space-y-1">
-                    {edu.instituteName && (
-                      <h3 className="font-medium text-base text-black">{edu.instituteName}</h3>
-                    )}
-                    {edu.degreeName && (
-                      <p className="text-[#585E68]">{edu.degreeName}</p>
-                    )}
-                    {edu.certificateOrDegree && (
-                      <p className="text-[#585E68]">{edu.certificateOrDegree}</p>
-                    )}
-                    {edu.currentlyEnrolled ? (
-                      <p className="text-[#585E68]">Present</p>
-                    ) : (
-                      edu.graduationYear && (
-                        <p className="text-[#585E68]">{edu.graduationYear}</p>
-                      )
+                  <div key={index}>
+                    {(edu.instituteName || edu.degreeName || edu.certificateOrDegree || edu.currentlyEnrolled || edu.graduationYear) && (
+                      <div className="border border-[#C9C9C9] rounded-xl p-3.5 space-y-1">
+                        {edu.instituteName && (
+                          <h3 className="font-medium text-base text-black">{edu.instituteName}</h3>
+                        )}
+                        {edu.degreeName && (
+                          <p className="text-[#585E68]">{edu.degreeName}</p>
+                        )}
+                        {edu.certificateOrDegree && (
+                          <p className="text-[#585E68]">{edu.certificateOrDegree}</p>
+                        )}
+                        {edu.currentlyEnrolled ? (
+                          <p className="text-[#585E68]">Present</p>
+                        ) : (
+                          edu.graduationYear && (
+                            <p className="text-[#585E68]">{edu.graduationYear}</p>
+                          )
+                        )}
+                      </div>
                     )}
                   </div>
                 ))}

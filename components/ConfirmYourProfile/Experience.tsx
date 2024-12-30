@@ -110,7 +110,7 @@ const Experience: React.FC<ExperienceProps> = ({ isAnyEditing, isEditing, setIsE
       <div className={`mt-3 ${isEditing ? "border border-[#C9C9C9] rounded-[10px] p-2 md:p-4" : ""}`}>
         {isEditing ? (
           <div>
-            {experiences.map((experience, index) => (
+            {experiences?.map((experience, index) => (
               <div key={index} className={`mb-3 ${index !== experiences.length - 1 ? 'border-b-[3px] border-[#E7E7E7] pb-2.5' : ''
                 }`}>
                 <div className="flex justify-between items-center">
@@ -249,46 +249,50 @@ const Experience: React.FC<ExperienceProps> = ({ isAnyEditing, isEditing, setIsE
               </div>
             ) : (
               <div>
-                {experiences.map((experience, index) => (
-                  <div key={index} className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
-                    {experience.companyName && (
-                      <h3 className="font-medium text-base text-black">{experience.companyName}</h3>
+                {experiences?.map((experience, index) => (
+                  <div key={index}>
+                    {(experience.companyName || experience.position || experience.startDate || experience.endDate || experience.responsibilities) && (
+                      <div  className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
+                        {experience.companyName && (
+                          <h3 className="font-medium text-base text-black">{experience.companyName}</h3>
+                        )}
+                        {experience.position && (
+                          <p className="text-[#585E68] font-medium">{experience.position}</p>
+                        )}
+                        {experience.startDate && (
+                          <p className="text-[#585E68] font-medium">
+                            {experience.startDate}
+                            {experience.currentlyWork
+                              ? " - Present"
+                              : experience.endDate && ` - ${experience.endDate}`}
+                            {(() => {
+                              const parseDate = (dateString: string): Date => {
+                                const [month, year] = dateString.split(" ");
+                                return new Date(`${month} 1, ${year}`);
+                              };
+
+                              const startDate = parseDate(experience.startDate);
+                              const endDate = experience.endDate
+                                ? parseDate(experience.endDate)
+                                : new Date(); // Use current date if endDate doesn't exist or currentlyWork is true.
+
+                              const yearGap = (
+                                (endDate.getTime() - startDate.getTime()) /
+                                (1000 * 60 * 60 * 24 * 365)
+                              ).toFixed(1); // Calculate year gap
+
+                              return ` (${yearGap} years)`;
+                            })()}
+                          </p>
+                        )}
+                        {experience.responsibilities && (
+                          <ul className="list-disc">
+                            <li className="text-[#585E68] ml-6">{experience.responsibilities}</li>
+                          </ul>
+                        )}
+                      </div>
                     )}
-                    {experience.position && (
-                      <p className="text-[#585E68] font-medium">{experience.position}</p>
-                    )}
-                    {experience.startDate && (
-                      <p className="text-[#585E68] font-medium">
-                        {experience.startDate}
-                        {experience.currentlyWork
-                          ? " - Present"
-                          : experience.endDate && ` - ${experience.endDate}`
-                        }
-                        {(() => {
-                          const parseDate = (dateString: string): Date => {
-                            const [month, year] = dateString.split(" ");
-                            return new Date(`${month} 1, ${year}`);
-                          };
 
-                          const startDate = parseDate(experience.startDate);
-                          const endDate = experience.endDate
-                            ? parseDate(experience.endDate)
-                            : new Date(); // Use current date if endDate doesn't exist or currentlyWork is true.
-
-                          const yearGap = ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 365)).toFixed(1); // Calculate year gap
-
-                          return ` (${yearGap} years)`;
-                        })()}
-                      </p>
-                    )}
-
-
-
-                    {experience.responsibilities && (
-                      <ul className="list-disc">
-                        <li className="text-[#585E68] ml-6">{experience.responsibilities}</li>
-                      </ul>
-                    )}
                   </div>
                 ))}
                 {!isEditing && (
