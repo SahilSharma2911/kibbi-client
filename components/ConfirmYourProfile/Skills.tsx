@@ -5,11 +5,16 @@ import { FaPlus } from 'react-icons/fa6'
 import { motion } from "framer-motion";
 
 interface SkillsProps {
+    isAnyEditing: boolean;
     isEditing: boolean;
     setIsEditing: (value: boolean) => void;
 }
 
-const Skills: React.FC<SkillsProps> = ({ isEditing, setIsEditing }) => {
+const Skills: React.FC<SkillsProps> = ({ isAnyEditing, isEditing, setIsEditing }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const handleToggle = () => {
+        setIsExpanded((prev) => !prev);
+    };
     const { resumeData, setResumeData } = useResumeData();
     console.log("the skills are:::", resumeData?.Skills);
     const [skills, setSkills] = useState(resumeData?.Skills || []);
@@ -119,28 +124,44 @@ const Skills: React.FC<SkillsProps> = ({ isEditing, setIsEditing }) => {
                         </div>
                     </div>
                 ) : (
-                    <div>
-                        <ul className="list-disc flex flex-col gap-2 mt-1 ml-7">
-                            {skills.map((skill, index) => (
-                                <li key={index}>{skill}</li>
-                            ))}
-                        </ul>
-                    </div>
+                    <>
+                        {isAnyEditing && !isExpanded ? (
+                            <div className="mt-2 w-full justify-center items-center">
+                                <button
+                                    onClick={handleToggle}
+                                    className="text-[#0483F8] w-full flex gap-2 justify-center items-center"
+                                >
+                                    Click to view all information
+                                    <Image src={"/Images/down-arrow.png"} width={17} height={17} alt='arrow' />
+                                </button>
+                            </div>
+                        ) : (
+                            <div>
+                                <div>
+                                    <ul className="list-disc flex flex-col gap-2 mt-1 ml-7">
+                                        {skills.map((skill, index) => (
+                                            <li key={index}>{skill}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                {!isEditing && (
+                                    <div className=' flex items-center ml-4 mt-4 gap-3 cursor-pointer' onClick={() => {
+                                        handleAddSkill();
+                                        setIsEditing(true);
+                                    }}
+                                    >
+                                        <span className=' bg-red w-6 h-6 rounded-full text-white flex justify-center items-center '>
+                                            <FaPlus />
+                                        </span>
+                                        <p className=' text-blue'>Add more skills</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </>
                 )}
-
             </div>
-            {!isEditing && (
-                <div className=' flex items-center ml-4 mt-4 gap-3 cursor-pointer' onClick={() => {
-                    handleAddSkill();
-                    setIsEditing(true);
-                }}
-                >
-                    <span className=' bg-red w-6 h-6 rounded-full text-white flex justify-center items-center '>
-                        <FaPlus />
-                    </span>
-                    <p className=' text-blue'>Add more skills</p>
-                </div>
-            )}
+
         </section>
     )
 }

@@ -15,11 +15,16 @@ interface Certification {
 }
 
 interface CertificationProps {
+    isAnyEditing: boolean;
     isEditing: boolean;
     setIsEditing: (value: boolean) => void;
 }
 
-const LicenseCertification: React.FC<CertificationProps> = ({ isEditing, setIsEditing }) => {
+const LicenseCertification: React.FC<CertificationProps> = ({ isAnyEditing, isEditing, setIsEditing }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const handleToggle = () => {
+        setIsExpanded((prev) => !prev);
+    };
     const { resumeData, setResumeData } = useResumeData();
     console.log("The certifications are:::", resumeData?.Certifications);
 
@@ -101,7 +106,7 @@ const LicenseCertification: React.FC<CertificationProps> = ({ isEditing, setIsEd
             <div className={`mt-3 ${isEditing ? "border border-[#C9C9C9] rounded-xl p-2 md:p-4" : ""}`}>
                 {isEditing ? (
                     <div>
-                        {certifications.map((cert, index) => (
+                        {certifications?.map((cert, index) => (
                             <div key={index} className={`mb-3 ${index !== certifications.length - 1 ? 'border-b-[3px] border-[#E7E7E7] pb-2.5' : ''
                                 }`}>
                                 <div className="flex justify-between items-center mb-3">
@@ -201,45 +206,75 @@ const LicenseCertification: React.FC<CertificationProps> = ({ isEditing, setIsEd
                         </div>
                     </div>
                 ) : (
-                    <div>
-                        {certifications.map((cert, index) => (
-                            <div key={index} className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
-                                {cert.documentName && (
-                                    <p className="font-medium text-base text-black">{cert.documentName}</p>
-                                )}
-                                {cert.issuer && (
-                                    <p className="text-[#585E68] font-medium">{cert.issuer}</p>
-                                )}
-                                {(cert.issueDate || cert.expiryDate) && (
-                                    <p className="text-[#585E68] font-medium">
-                                        {cert.issueDate}{cert.issueDate && cert.expiryDate && " - "}{cert.expiryDate}
-                                    </p>
-                                )}
-                                {/* {cert.certificateImage && (
+                    <>
+                        {isAnyEditing && !isExpanded ? (
+                            <div className="mt-2 w-full justify-center items-center">
+                                <button
+                                    onClick={handleToggle}
+                                    className="text-[#0483F8] w-full flex gap-2 justify-center items-center"
+                                >
+                                    Click to view all information
+                                    <Image src={"/Images/down-arrow.png"} width={17} height={17} alt='arrow' />
+                                </button>
+                            </div>
+                        ) : (
+                            <div>
+                                <div>
+                                    {certifications?.map((cert, index) => (
+                                        <div key={index} className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
+                                            {cert.documentName && (
+                                                <p className="font-medium text-base text-black">{cert.documentName}</p>
+                                            )}
+                                            {cert.issuer && (
+                                                <p className="text-[#585E68] font-medium">{cert.issuer}</p>
+                                            )}
+                                            {(cert.issueDate || cert.expiryDate) && (
+                                                <p className="text-[#585E68] font-medium">
+                                                    {cert.issueDate}
+                                                    {cert.issueDate && cert.expiryDate && " - "}
+                                                    {cert.expiryDate}
+                                                    {cert.issueDate && cert.expiryDate && (() => {
+                                                        const parseDate = (dateString: string): Date => {
+                                                            const [month, year] = dateString.split(" ");
+                                                            return new Date(`${month} 1, ${year}`);
+                                                        };
+
+                                                        const issueDate = parseDate(cert.issueDate);
+                                                        const expiryDate = parseDate(cert.expiryDate);
+
+                                                        const yearGap = ((expiryDate.getTime() - issueDate.getTime()) / (1000 * 60 * 60 * 24 * 365)).toFixed(1);
+
+                                                        return ` (${yearGap} years)`;
+                                                    })()}
+                                                </p>
+                                            )}
+                                            {/* {cert.certificateImage && (
                                     <div className="mt-1">
                                         <Image src={cert.certificateImage} alt="certificate" width={100} height={100} />
                                     </div>
                                 )} */}
+                                        </div>
+                                    ))}
+                                </div>
+                                {!isEditing && (
+                                    <div
+                                        className="flex items-center ml-4 mt-4 gap-3 cursor-pointer"
+                                        onClick={() => {
+                                            handleAddCertification();
+                                            setIsEditing(true);
+                                        }}
+                                    >
+                                        <span className="bg-red w-6 h-6 rounded-full text-white flex justify-center items-center">
+                                            <FaPlus />
+                                        </span>
+                                        <p className="text-blue">Add more certification</p>
+                                    </div>
+                                )}
                             </div>
-                        ))}
-                    </div>
+                        )}
+                    </>
                 )}
             </div>
-
-            {!isEditing && (
-                <div
-                    className="flex items-center ml-4 mt-4 gap-3 cursor-pointer"
-                    onClick={() => {
-                        handleAddCertification();
-                        setIsEditing(true);
-                    }}
-                >
-                    <span className="bg-red w-6 h-6 rounded-full text-white flex justify-center items-center">
-                        <FaPlus />
-                    </span>
-                    <p className="text-blue">Add more certification</p>
-                </div>
-            )}
         </section>
     );
 };

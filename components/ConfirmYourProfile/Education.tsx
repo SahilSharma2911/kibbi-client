@@ -14,11 +14,16 @@ interface Education {
 }
 
 interface EducationProps {
+  isAnyEditing: boolean;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
 }
 
-const Education: React.FC<EducationProps> = ({ isEditing, setIsEditing }) => {
+const Education: React.FC<EducationProps> = ({ isAnyEditing, isEditing, setIsEditing }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const handleToggle = () => {
+    setIsExpanded((prev) => !prev);
+  };
   const { resumeData, setResumeData } = useResumeData();
   const [education, setEducation] = useState(resumeData?.Education || []);
 
@@ -105,7 +110,7 @@ const Education: React.FC<EducationProps> = ({ isEditing, setIsEditing }) => {
       <div className={`mt-3 ${isEditing ? "space-y-4" : "space-y-3"}`}>
         {isEditing ? (
           <div className="border border-[#C9C9C9] rounded-[10px] p-4 space-y-3">
-            {education.map((edu, index) => (
+            {education?.map((edu, index) => (
               <div key={index} className={`mb-3 ${index !== education.length - 1 ? 'border-b-[3px] border-[#E7E7E7] pb-2.5' : ''
                 }`}>
                 <div className="flex justify-between items-center">
@@ -204,42 +209,58 @@ const Education: React.FC<EducationProps> = ({ isEditing, setIsEditing }) => {
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
-            {education.map((edu, index) => (
-              <div key={index} className="border border-[#C9C9C9] rounded-xl p-3.5 space-y-1">
-                {edu.instituteName && (
-                  <h3 className="font-medium text-base text-black">{edu.instituteName}</h3>
-                )}
-                {edu.degreeName && (
-                  <p className="text-[#585E68]">{edu.degreeName}</p>
-                )}
-                {edu.certificateOrDegree && (
-                  <p className="text-[#585E68]">{edu.certificateOrDegree}</p>
-                )}
-                {edu.currentlyEnrolled ? (
-                  <p className="text-[#585E68]">Present</p>
-                ) : (
-                  edu.graduationYear && (
-                    <p className="text-[#585E68]">{edu.graduationYear}</p>
-                  )
+          <>
+            {isAnyEditing && !isExpanded ? (
+              <div className="mt-2 w-full justify-center items-center">
+                <button
+                  onClick={handleToggle}
+                  className="text-[#0483F8] w-full flex gap-2 justify-center items-center"
+                >
+                  Click to view all information
+                  <Image src={"/Images/down-arrow.png"} width={17} height={17} alt='arrow' />
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {education?.map((edu, index) => (
+                  <div key={index} className="border border-[#C9C9C9] rounded-xl p-3.5 space-y-1">
+                    {edu.instituteName && (
+                      <h3 className="font-medium text-base text-black">{edu.instituteName}</h3>
+                    )}
+                    {edu.degreeName && (
+                      <p className="text-[#585E68]">{edu.degreeName}</p>
+                    )}
+                    {edu.certificateOrDegree && (
+                      <p className="text-[#585E68]">{edu.certificateOrDegree}</p>
+                    )}
+                    {edu.currentlyEnrolled ? (
+                      <p className="text-[#585E68]">Present</p>
+                    ) : (
+                      edu.graduationYear && (
+                        <p className="text-[#585E68]">{edu.graduationYear}</p>
+                      )
+                    )}
+                  </div>
+                ))}
+                {!isEditing && (
+                  <div
+                    className="flex items-center ml-4 mt-4 gap-3 cursor-pointer"
+                    onClick={handleAddEducation}
+                  >
+                    <span className="bg-red w-6 h-6 rounded-full text-white flex justify-center items-center">
+                      <FaPlus />
+                    </span>
+                    <p className="text-blue">Add more education</p>
+                  </div>
                 )}
               </div>
-            ))}
-          </div>
+            )}
+          </>
+
         )}
       </div>
 
-      {!isEditing && (
-        <div
-          className="flex items-center ml-4 mt-4 gap-3 cursor-pointer"
-          onClick={handleAddEducation}
-        >
-          <span className="bg-red w-6 h-6 rounded-full text-white flex justify-center items-center">
-            <FaPlus />
-          </span>
-          <p className="text-blue">Add more education</p>
-        </div>
-      )}
+
 
       {/* Popup modal */}
       <AnimatePresence>

@@ -235,12 +235,13 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ isAnyEditing, isEditing, se
 
             {/* Conditional rendering based on isAnyEditing */}
             {isAnyEditing && !isExpanded ? (
-              <div className="mt-2 w-full justify-center items-center">
+              <div className="mt-4 w-full justify-center items-center">
                 <button
                   onClick={handleToggle}
-                  className="text-[#0483F8] underline w-full"
+                  className="text-[#0483F8] w-full flex gap-2 justify-center items-center"
                 >
                   Click to view all information
+                  <Image src={"/Images/down-arrow.png"} width={17} height={17} alt='arrow' />
                 </button>
               </div>
             ) : (
@@ -248,7 +249,16 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ isAnyEditing, isEditing, se
                 {personalInfo.summary && <li>{personalInfo.summary}</li>}
                 {personalInfo?.contactInfo?.Address && <li>Address: {personalInfo.contactInfo.Address}</li>}
                 {personalInfo?.contactInfo?.LinkedIn && <li>LinkedIn: {personalInfo.contactInfo.LinkedIn}</li>}
+                {/* {isAnyEditing && (
+                  <button
+                    onClick={handleToggle}
+                    className="text-blue-500 underline mt-2"
+                  >
+                    Collapse
+                  </button>
+                )} */}
               </ul>
+
             )}
           </div>
         )}

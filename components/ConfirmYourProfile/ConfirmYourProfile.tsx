@@ -17,6 +17,52 @@ import { useResumeData } from '@/context/ResumeDataContext'
 import toast from 'react-hot-toast'
 import ViewResume from './ViewResume'
 
+interface ContactInformation {
+    Address: string;
+    Phone: string;
+    Email: string;
+    LinkedIn: string;
+}
+
+interface Educationn {
+    instituteName: string;
+    certificateOrDegree: string;
+    degreeName: string;
+    graduationYear: string;
+    currentlyEnrolled: boolean;
+}
+
+interface WorkExperience {
+    position: string;
+    companyName: string;
+    location: string;
+    startDate: string;
+    endDate: string;
+    currentlyWork: boolean;
+    responsibilities: string;
+}
+
+interface Certification {
+    documentType: string;
+    documentName: string;
+    issuer: string;
+    issueDate: string;
+    expiryDate: string;
+    certificateImage: string;
+}
+
+interface ResumeData {
+    "First Name": string;
+    "Last Name": string;
+    summary: string;
+    "Contact Information": ContactInformation;
+    Skills: string[];
+    Education: Educationn[];
+    "Work Experience": WorkExperience[];
+    Certifications: Certification[];
+    Languages: string[];
+}
+
 const ConfirmYourProfile = () => {
     const { resumeData, setResumeData } = useResumeData();
     const router = useRouter();
@@ -49,17 +95,19 @@ const ConfirmYourProfile = () => {
 
         try {
             e.preventDefault();
-            const result = await updateData(resumeData);
-
-            // If successful, then navigate programmatically
-            window.location.href = "/resume/confirm-your-profile";
-
-            // Optional: Show success toast
-            toast.success("Data saved successfully!");
+            if (resumeData) {
+                await updateData(resumeData);
+                window.location.href = "/resume/confirm-your-profile";
+                toast.success("Data saved successfully!");
+            } else {
+                toast.error("Resume data is not available.");
+            }
         } catch (error) {
             toast.error("Failed to save data. Please try again.");
             console.error('Error saving data:', error);
         }
+
+
     };
 
     const handleEditingChange = (index: number, value: boolean) => {
@@ -114,7 +162,7 @@ const ConfirmYourProfile = () => {
         parseResume();
     }, [selectedResume]);
 
-    const updateData = async (data: any) => {
+    const updateData = async (data: ResumeData) => {
         try {
             const response = await fetch('/api/parse-resume', {
                 method: 'PUT',
@@ -212,18 +260,22 @@ const ConfirmYourProfile = () => {
                             setIsEditing={(value) => handleEditingChange(0, value)}
                         />
                         <Education
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[1]}
                             setIsEditing={(value) => handleEditingChange(1, value)}
                         />
                         <Experience
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[2]}
                             setIsEditing={(value) => handleEditingChange(2, value)}
                         />
                         <Skills
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[3]}
                             setIsEditing={(value) => handleEditingChange(3, value)}
                         />
                         <LicenseCertification
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[4]}
                             setIsEditing={(value) => handleEditingChange(4, value)}
                         />
