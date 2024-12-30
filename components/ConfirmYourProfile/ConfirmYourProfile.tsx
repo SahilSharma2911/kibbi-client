@@ -18,7 +18,7 @@ import toast from 'react-hot-toast'
 import ViewResume from './ViewResume'
 
 const ConfirmYourProfile = () => {
-    const { setResumeData } = useResumeData();
+    const { resumeData, setResumeData } = useResumeData();
     const router = useRouter();
     const handleUploadAnother = () => {
         router.push('/resume?from=confirm')
@@ -27,17 +27,38 @@ const ConfirmYourProfile = () => {
     const selectedResume = selectedResumeIndex !== null ? resumes[selectedResumeIndex] : null;
 
     const [isEditingList, setIsEditingList] = useState([false, false, false, false, false]);
+    const [isAnyEditing, setIsAnyEditing] = useState(false);
+    useEffect(() => {
+        // Update `isAnyEditing` whenever `isEditingList` changes
+        setIsAnyEditing(isEditingList.some((isEditing) => isEditing));
+    }, [isEditingList]);
 
-    const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleNextClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        // First check for editing state
         if (isEditingList.includes(true)) {
             e.preventDefault();
             toast.dismiss();
             toast("Please finish editing all fields before proceeding", {
-                icon: "⚠️ ",
+                icon: "⚠️",
                 style: {
                     borderRadius: "10px",
                 },
             });
+            return;
+        }
+
+        try {
+            e.preventDefault();
+            const result = await updateData(resumeData);
+
+            // If successful, then navigate programmatically
+            window.location.href = "/resume/confirm-your-profile";
+
+            // Optional: Show success toast
+            toast.success("Data saved successfully!");
+        } catch (error) {
+            toast.error("Failed to save data. Please try again.");
+            console.error('Error saving data:', error);
         }
     };
 
@@ -92,6 +113,28 @@ const ConfirmYourProfile = () => {
 
         parseResume();
     }, [selectedResume]);
+
+    const updateData = async (data: any) => {
+        try {
+            const response = await fetch('/api/parse-resume', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Error updating data:', error);
+            throw error;
+        }
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -164,6 +207,7 @@ const ConfirmYourProfile = () => {
                     {/* right side  */}
                     <div className='w-full lg:w-[50%] mt-3 md:mt-10 space-y-3'>
                         <PersonalInfo
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[0]}
                             setIsEditing={(value) => handleEditingChange(0, value)}
                         />

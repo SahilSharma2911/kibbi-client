@@ -18,13 +18,18 @@ interface PersonalInfo {
 }
 
 interface PersonalInfoProps {
+  isAnyEditing: boolean;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
 }
 
-const PersonalInfo: React.FC<PersonalInfoProps> = ({ isEditing, setIsEditing }) => {
+const PersonalInfo: React.FC<PersonalInfoProps> = ({ isAnyEditing, isEditing, setIsEditing }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const handleToggle = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
   const { resumeData, setResumeData } = useResumeData();
-  // const [isEditing, setIsEditing] = useState(false);
   const [personalInfo, setPersonalInfo] = useState({
     summary: resumeData?.summary || "",
     contactInfo: resumeData?.["Contact Information"] || {
@@ -217,8 +222,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ isEditing, setIsEditing }) 
             </div>
           </div>
         ) : (
-          <div className='mt-3'>
-            <div className='space-y-1'>
+          <div className="mt-3 w-full">
+            <div className="space-y-1">
               {(personalInfo.firstName || personalInfo.lastName) && (
                 <h3 className="font-medium text-base text-black">
                   {personalInfo.firstName} {personalInfo.lastName}
@@ -227,14 +232,25 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ isEditing, setIsEditing }) 
               {personalInfo?.contactInfo?.Email && <p>Email: {personalInfo.contactInfo.Email}</p>}
               {personalInfo?.contactInfo?.Phone && <p>Phone number: {personalInfo.contactInfo.Phone}</p>}
             </div>
-            <ul className="list-disc flex flex-col gap-2 pl-7 mt-2">
-              {personalInfo.summary && <li>{personalInfo.summary}</li>}
-              {personalInfo?.contactInfo?.Address && <li>Address: {personalInfo.contactInfo.Address}</li>}
-              {personalInfo?.contactInfo?.LinkedIn && <li>LinkedIn: {personalInfo.contactInfo.LinkedIn}</li>}
-            </ul>
+
+            {/* Conditional rendering based on isAnyEditing */}
+            {isAnyEditing && !isExpanded ? (
+              <div className="mt-2 w-full justify-center items-center">
+                <button
+                  onClick={handleToggle}
+                  className="text-[#0483F8] underline w-full"
+                >
+                  Click to view all information
+                </button>
+              </div>
+            ) : (
+              <ul className="list-disc flex flex-col gap-2 pl-7 mt-2">
+                {personalInfo.summary && <li>{personalInfo.summary}</li>}
+                {personalInfo?.contactInfo?.Address && <li>Address: {personalInfo.contactInfo.Address}</li>}
+                {personalInfo?.contactInfo?.LinkedIn && <li>LinkedIn: {personalInfo.contactInfo.LinkedIn}</li>}
+              </ul>
+            )}
           </div>
-
-
         )}
       </div>
     </section>

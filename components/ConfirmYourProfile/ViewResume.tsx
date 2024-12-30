@@ -64,7 +64,7 @@ const ViewResume = () => {
                                 Skills
                             </h3>
                             <ul className='list-disc mt-2 text-[0.6rem] ml-3'>
-                                {resumeData.Skills.map((skill, index) => (
+                                {resumeData?.Skills?.map((skill, index) => (
                                     <li key={index}>
                                         {skill}
                                     </li>
@@ -80,7 +80,7 @@ const ViewResume = () => {
                                 Education Background
                             </h3>
                             <div className="">
-                                {resumeData.Education.map((edu, index) => (
+                                {resumeData?.Education?.map((edu, index) => (
                                     <div key={index} className="flex gap-2 mt-2">
                                         <span>
                                             <PiDotOutlineFill />
@@ -133,7 +133,7 @@ const ViewResume = () => {
                         </h3>
 
                         <div className='text-[0.6rem]'>
-                            {resumeData?.["Work Experience"].map((exp, index) => (
+                            {resumeData?.["Work Experience"]?.map((exp, index) => (
                                 <div key={index}>
                                     {/* Render companyName and position if both exist */}
                                     {(exp?.companyName || exp?.position) && (
@@ -176,7 +176,7 @@ const ViewResume = () => {
                                 Certifications
                             </h3>
                             <div className='mt-2'>
-                                {resumeData.Certifications.map((cert, index) => (
+                                {resumeData.Certifications?.map((cert, index) => (
                                     <div key={index} className="flex gap-2 mt-1">
                                         {/* Icon is static, so it always renders */}
                                         <span>
