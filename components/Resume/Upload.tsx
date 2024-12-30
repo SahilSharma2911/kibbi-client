@@ -26,7 +26,10 @@ const Upload = () => {
   const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!selectedResume) {
       e.preventDefault();
+      toast.dismiss();
+
       toast("Please select your resume!", {
+        id: 'resume-warning',
         icon: "📄",
         style: {
           borderRadius: "10px",

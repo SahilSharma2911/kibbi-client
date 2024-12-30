@@ -31,6 +31,7 @@ const ConfirmYourProfile = () => {
     const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (isEditingList.includes(true)) {
             e.preventDefault();
+            toast.dismiss();
             toast("Please finish editing all fields before proceeding", {
                 icon: "⚠️ ",
                 style: {

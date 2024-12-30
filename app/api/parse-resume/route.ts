@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 const url = process.env.NEXT_PUBLIC_RESUME_PARSE_API_URL;
+const url2 = process.env.NEXT_PUBLIC_RESUME_PARSE_API_URL;
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,6 +22,24 @@ export async function POST(request: NextRequest) {
     console.error("Error parsing resume:", error);
     return NextResponse.json(
       { error: "Failed to parse resume" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const jsonData = await request.json();
+    const response = await axios.put(`${url2}`, jsonData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return NextResponse.json(response.data);
+  } catch (error) {
+    console.error("Error updating data:", error);
+    return NextResponse.json(
+      { error: "Failed to update data" },
       { status: 500 }
     );
   }
