@@ -17,8 +17,54 @@ import { useResumeData } from '@/context/ResumeDataContext'
 import toast from 'react-hot-toast'
 import ViewResume from './ViewResume'
 
+interface ContactInformation {
+    Address: string;
+    Phone: string;
+    Email: string;
+    LinkedIn: string;
+}
+
+interface Educationn {
+    instituteName: string;
+    certificateOrDegree: string;
+    degreeName: string;
+    graduationYear: string;
+    currentlyEnrolled: boolean;
+}
+
+interface WorkExperience {
+    position: string;
+    companyName: string;
+    location: string;
+    startDate: string;
+    endDate: string;
+    currentlyWork: boolean;
+    responsibilities: string;
+}
+
+interface Certification {
+    documentType: string;
+    documentName: string;
+    issuer: string;
+    issueDate: string;
+    expiryDate: string;
+    certificateImage: string;
+}
+
+interface ResumeData {
+    "First Name": string;
+    "Last Name": string;
+    summary: string;
+    "Contact Information": ContactInformation;
+    Skills: string[];
+    Education: Educationn[];
+    "Work Experience": WorkExperience[];
+    Certifications: Certification[];
+    Languages: string[];
+}
+
 const ConfirmYourProfile = () => {
-    const { setResumeData } = useResumeData();
+    const { resumeData, setResumeData } = useResumeData();
     const router = useRouter();
     const handleUploadAnother = () => {
         router.push('/resume?from=confirm')
@@ -27,18 +73,45 @@ const ConfirmYourProfile = () => {
     const selectedResume = selectedResumeIndex !== null ? resumes[selectedResumeIndex] : null;
 
     const [isEditingList, setIsEditingList] = useState([false, false, false, false, false]);
+    const [isAnyEditing, setIsAnyEditing] = useState(false);
 
-    const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    useEffect(() => {
+        // Check if any field is true in isEditingList
+        const anyEditing = isEditingList.some((isEditing) => isEditing);
+
+        // If none are true, set isAnyEditing to false, otherwise true
+        setIsAnyEditing(anyEditing);
+    }, [isEditingList]);
+
+    const handleNextClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        // First check for editing state
         if (isEditingList.includes(true)) {
             e.preventDefault();
             toast.dismiss();
             toast("Please finish editing all fields before proceeding", {
-                icon: "⚠️ ",
+                icon: "⚠️",
                 style: {
                     borderRadius: "10px",
                 },
             });
+            return;
         }
+
+        try {
+            e.preventDefault();
+            if (resumeData) {
+                await updateData(resumeData);
+                window.location.href = "/resume/confirm-your-profile";
+                toast.success("Data saved successfully!");
+            } else {
+                toast.error("Resume data is not available.");
+            }
+        } catch (error) {
+            toast.error("Failed to save data. Please try again.");
+            console.error('Error saving data:', error);
+        }
+
+
     };
 
     const handleEditingChange = (index: number, value: boolean) => {
@@ -92,6 +165,28 @@ const ConfirmYourProfile = () => {
 
         parseResume();
     }, [selectedResume]);
+
+    const updateData = async (data: ResumeData) => {
+        try {
+            const response = await fetch('/api/parse-resume', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Error updating data:', error);
+            throw error;
+        }
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -148,11 +243,9 @@ const ConfirmYourProfile = () => {
             <section className="bg-white px-4 py-7 rounded-2xl">
                 <h1 className=' font-caveat text-red font-bold text-2xl md:text-3xl pb-6'>Confirm your profile</h1>
                 <Stepper />
-
-                <div className='w-full mt-7 md:mt-12 flex flex-col lg:flex-row gap-8'>
-
+                <div className='w-full mt-7 md:mt-12 flex flex-col lg:flex-row gap-3 md:gap-8'>
                     {/* left side  */}
-                    <div className='w-full lg:w-[50%] space-y-3 font-sans font-medium md:px-2 hidden lg:block'>
+                    <div className='w-full lg:w-[50%] space-y-3 font-sans font-medium md:px-2 '>
                         <h3 className='font-medium'>View Resume</h3>
                         {/* <Image
                             src={"/Images/resume.png"}
@@ -166,22 +259,27 @@ const ConfirmYourProfile = () => {
                     {/* right side  */}
                     <div className='w-full lg:w-[50%] mt-3 md:mt-10 space-y-3'>
                         <PersonalInfo
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[0]}
                             setIsEditing={(value) => handleEditingChange(0, value)}
                         />
                         <Education
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[1]}
                             setIsEditing={(value) => handleEditingChange(1, value)}
                         />
                         <Experience
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[2]}
                             setIsEditing={(value) => handleEditingChange(2, value)}
                         />
                         <Skills
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[3]}
                             setIsEditing={(value) => handleEditingChange(3, value)}
                         />
                         <LicenseCertification
+                            isAnyEditing={isAnyEditing}
                             isEditing={isEditingList[4]}
                             setIsEditing={(value) => handleEditingChange(4, value)}
                         />

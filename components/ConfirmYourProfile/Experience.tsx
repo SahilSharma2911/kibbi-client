@@ -15,13 +15,17 @@ interface WorkExperience {
 }
 
 interface ExperienceProps {
+  isAnyEditing: boolean;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
 }
 
 
-const Experience: React.FC<ExperienceProps> = ({ isEditing, setIsEditing }) => {
-
+const Experience: React.FC<ExperienceProps> = ({ isAnyEditing, isEditing, setIsEditing }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const handleToggle = () => {
+    setIsExpanded((prev) => !prev);
+  };
   const { resumeData, setResumeData } = useResumeData();
   console.log("The work experience are:::", resumeData?.["Work Experience"]);
   const [experiences, setExperiences] = useState(resumeData?.["Work Experience"] || []);
@@ -106,7 +110,7 @@ const Experience: React.FC<ExperienceProps> = ({ isEditing, setIsEditing }) => {
       <div className={`mt-3 ${isEditing ? "border border-[#C9C9C9] rounded-[10px] p-2 md:p-4" : ""}`}>
         {isEditing ? (
           <div>
-            {experiences.map((experience, index) => (
+            {experiences?.map((experience, index) => (
               <div key={index} className={`mb-3 ${index !== experiences.length - 1 ? 'border-b-[3px] border-[#E7E7E7] pb-2.5' : ''
                 }`}>
                 <div className="flex justify-between items-center">
@@ -232,49 +236,86 @@ const Experience: React.FC<ExperienceProps> = ({ isEditing, setIsEditing }) => {
             </div>
           </div>
         ) : (
-          <div>
-            {experiences.map((experience, index) => (
-              <div key={index} className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
-                {experience.companyName && (
-                  <h3 className="font-medium text-base text-black">{experience.companyName}</h3>
-                )}
-                {experience.position && (
-                  <p className="text-[#585E68] font-medium">{experience.position}</p>
-                )}
-                {experience.startDate && (
-                  <p className="text-[#585E68] font-medium">
-                    {experience.startDate}
-                    {experience.currentlyWork
-                      ? " - Present"
-                      : experience.endDate && ` - ${experience.endDate}`
-                    }
-                  </p>
-                )}
-                {experience.responsibilities && (
-                  <ul className="list-disc">
-                    <li className="text-[#585E68] ml-6">{experience.responsibilities}</li>
-                  </ul>
+          <>
+            {isAnyEditing && !isExpanded ? (
+              <div className="mt-2 w-full justify-center items-center">
+                <button
+                  onClick={handleToggle}
+                  className="text-[#0483F8] w-full flex gap-2 justify-center items-center"
+                >
+                  Click to view all information
+                  <Image src={"/Images/down-arrow.png"} width={17} height={17} alt='arrow' />
+                </button>
+              </div>
+            ) : (
+              <div>
+                {experiences?.map((experience, index) => (
+                  <div key={index}>
+                    {(experience.companyName || experience.position || experience.startDate || experience.endDate || experience.responsibilities) && (
+                      <div  className="border border-[#C9C9C9] rounded-[10px] p-3.5 mt-3 space-y-1">
+                        {experience.companyName && (
+                          <h3 className="font-medium text-base text-black">{experience.companyName}</h3>
+                        )}
+                        {experience.position && (
+                          <p className="text-[#585E68] font-medium">{experience.position}</p>
+                        )}
+                        {experience.startDate && (
+                          <p className="text-[#585E68] font-medium">
+                            {experience.startDate}
+                            {experience.currentlyWork
+                              ? " - Present"
+                              : experience.endDate && ` - ${experience.endDate}`}
+                            {(() => {
+                              const parseDate = (dateString: string): Date => {
+                                const [month, year] = dateString.split(" ");
+                                return new Date(`${month} 1, ${year}`);
+                              };
+
+                              const startDate = parseDate(experience.startDate);
+                              const endDate = experience.endDate
+                                ? parseDate(experience.endDate)
+                                : new Date(); // Use current date if endDate doesn't exist or currentlyWork is true.
+
+                              const yearGap = (
+                                (endDate.getTime() - startDate.getTime()) /
+                                (1000 * 60 * 60 * 24 * 365)
+                              ).toFixed(1); // Calculate year gap
+
+                              return ` (${yearGap} years)`;
+                            })()}
+                          </p>
+                        )}
+                        {experience.responsibilities && (
+                          <ul className="list-disc">
+                            <li className="text-[#585E68] ml-6">{experience.responsibilities}</li>
+                          </ul>
+                        )}
+                      </div>
+                    )}
+
+                  </div>
+                ))}
+                {!isEditing && (
+                  <div
+                    className="flex items-center ml-4 mt-4 gap-3 cursor-pointer"
+                    onClick={() => {
+                      handleAddExperience();
+                      setIsEditing(true);
+                    }}
+                  >
+                    <span className="bg-red w-6 h-6 rounded-full text-white flex justify-center items-center">
+                      <FaPlus />
+                    </span>
+                    <p className="text-blue">Add more experience</p>
+                  </div>
                 )}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
 
-      {!isEditing && (
-        <div
-          className="flex items-center ml-4 mt-4 gap-3 cursor-pointer"
-          onClick={() => {
-            handleAddExperience();
-            setIsEditing(true);
-          }}
-        >
-          <span className="bg-red w-6 h-6 rounded-full text-white flex justify-center items-center">
-            <FaPlus />
-          </span>
-          <p className="text-blue">Add more experience</p>
-        </div>
-      )}
+
     </section>
   );
 };
