@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 const url = process.env.NEXT_PUBLIC_RESUME_PARSE_API_URL;
-const url2 = process.env.NEXT_PUBLIC_RESUME_PARSE_API_URL;
+const url2 = process.env.NEXT_PUBLIC_RESUME_PARSE_API_URL_PUT;
 
 export async function POST(request: NextRequest) {
   try {

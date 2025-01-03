@@ -294,7 +294,8 @@ const ConfirmYourProfile = () => {
                     </button>
                     <Link href={"/resume/confirm-your-profile"}>
                         <button className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white"
-                            onClick={handleNextClick}>
+                            onClick={handleNextClick}
+                        >
                             Next
                         </button>
                     </Link>
