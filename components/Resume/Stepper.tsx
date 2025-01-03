@@ -15,6 +15,9 @@ const Stepper: React.FC = () => {
     if (pathname === "/resume/confirm-your-profile") {
       setCurrentStep(2);
     }
+    if (pathname === "/resume/drop-resume") {
+      setCurrentStep(3);
+    }
   }, [pathname]);
   const steps: Step[] = [
     { id: 1, label: "Create Your Profile" },
@@ -22,14 +25,6 @@ const Stepper: React.FC = () => {
     { id: 3, label: "Drop Resume" },
     { id: 4, label: "Your preferences (Optional)" },
   ];
-
-  // const handleNext = (): void => {
-  //   if (currentStep < steps.length) setCurrentStep(currentStep + 1);
-  // };
-
-  // const handlePrevious = (): void => {
-  //   if (currentStep > 1) setCurrentStep(currentStep - 1);
-  // };
 
   const formatStepNumber = (id: number): string => {
     return id.toString().padStart(2, "0");
@@ -117,24 +112,6 @@ const Stepper: React.FC = () => {
           </div>
         ))}
       </div>
-
-      {/* Navigation Buttons */}
-      {/* <div className="mt-6">
-        <button
-          onClick={handlePrevious}
-          className="px-4 py-2 mr-2 text-white bg-gray-500 rounded disabled:opacity-50"
-          disabled={currentStep === 1}
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          className="px-4 py-2 text-white bg-blue-500 rounded disabled:opacity-50"
-          disabled={currentStep === steps.length}
-        >
-          Next
-        </button>
-      </div> */}
     </div>
   );
 };
