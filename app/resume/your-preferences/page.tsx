@@ -1,10 +1,10 @@
-import Preferences from '@/components/YourPreferences/Preferences'
+import YourPreferences from '@/components/YourPreferences/YourPreferences'
 import React from 'react'
 
 const page = () => {
-  return (
-    <Preferences/>
-  )
+    return (
+        <YourPreferences />
+    )
 }
 
 export default page

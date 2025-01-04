@@ -15,9 +15,9 @@ const Section2 = () => {
                 <h3 className=' font-caveat text-center text-[2rem] text-red font-bold'>Yay,[First Name],</h3>
                 <p className=' text-center font-sans text-[1.5rem]'>Thank you for dropping your resume! Your profile has been successfully created and updated. You have also subscribed to receive job alerts from [business_name].</p>
                 <p className=' text-[#585E68] font-sans text-center mt-3'>
-                    <span className=' font-bold'> What ‘s next?</span>
+                    <span className=' font-bold'> What&#39;s next?</span>
                     <br />
-                    We'll notify you by text and email as soon as [Business Name] posts new jobs. For instant updates, you can also download the Kibbi app to receive real-time notifications.
+                    We&apos;ll notify you by text and email as soon as [Business Name] posts new jobs. For instant updates, you can also download the Kibbi app to receive real-time notifications.
                 </p>
             </div>
 
