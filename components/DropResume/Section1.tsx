@@ -1,43 +1,80 @@
-import React, { useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import Image from 'next/image'
 import { Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Section1 = () => {
-    const [letter, setLetter] = useState('');
-    const [submitted, setSubmitted] = useState('');
-    const handleSubmit = (e: any) => {
+type TimeSlot = "Morning" | "Afternoon" | "Evening" | "OverNight";
+type Day = "Mon" | "Tues" | "Wed" | "Thur" | "Sat" | "Fri" | "Sun";
+
+type Availability = Record<Day, Record<TimeSlot, boolean>>;
+
+interface Payload {
+    letter: string;
+    followBusinessName: boolean;
+    availability: Availability;
+}
+
+interface FormRef {
+    submit: () => void;
+}
+
+const Section1 = forwardRef<FormRef>((props, ref) => {
+    const [letter, setLetter] = useState<string>("");
+    const [isChecked, setIsChecked] = useState(false);
+    const [submitted, setSubmitted] = useState<Payload[]>([]);
+    console.log("submitted data:::", submitted)
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(letter);
-        setSubmitted(letter);
+
+        const payload: Payload = {
+            letter,
+            followBusinessName: isChecked,
+            availability,
+        };
+
+        // console.log(JSON.stringify(payload));
+        setSubmitted((prev) => [...prev, payload]);
     };
-    const days = ["Mon", "Tues", "Wed", "Thur", "Sat", "Fri", "Sun"];
-    const timeSlots = ["Morning", "Afternoon", "Evening", "OverNight"];
+
+    // Expose the submit function to parent
+    useImperativeHandle(ref, () => ({
+        submit: () => {
+            const payload: Payload = {
+                letter,
+                followBusinessName: isChecked,
+                availability,
+            };
+            setSubmitted((prev) => [...prev, payload]);
+        }
+    }));
+
+    const days: Day[] = ["Mon", "Tues", "Wed", "Thur", "Sat", "Fri", "Sun"];
+    const timeSlots: TimeSlot[] = ["Morning", "Afternoon", "Evening", "OverNight"];
 
     // Initialize availability state
-    const [availability, setAvailability] = useState(
+    const [availability, setAvailability] = useState<Availability>(
         days.reduce((acc, day) => {
             acc[day] = timeSlots.reduce((slotAcc, slot) => {
                 slotAcc[slot] = false; // Initially, all slots are unavailable
                 return slotAcc;
-            }, {});
+            }, {} as Record<TimeSlot, boolean>);
             return acc;
-        }, {})
+        }, {} as Availability)
     );
 
-    const handleAllToggle = (isChecked) => {
-        setAvailability((prev) =>
+    const handleAllToggle = (isChecked: boolean) => {
+        setAvailability(
             days.reduce((acc, day) => {
                 acc[day] = timeSlots.reduce((slotAcc, slot) => {
                     slotAcc[slot] = isChecked; // Set all slots for all days to isChecked
                     return slotAcc;
-                }, {});
+                }, {} as Record<TimeSlot, boolean>);
                 return acc;
-            }, {})
+            }, {} as Availability)
         );
     };
 
-    const handleSlotToggle = (day, slot) => {
+    const handleSlotToggle = (day: Day, slot: TimeSlot) => {
         setAvailability((prev) => ({
             ...prev,
             [day]: {
@@ -46,21 +83,22 @@ const Section1 = () => {
             },
         }));
     };
-    const handleSubmit2 = () => {
-        console.log("User Availability:", availability);
+
+    const handleCheckboxToggle = () => {
+        setIsChecked((prev) => !prev);
     };
 
     return (
-        <div className='pt-10 rounded-lg mt-10 px-4 lg:px-14 bg-[#FFFBFB]'>
+        <div className='pt-6 md:pt-10 pb-7 rounded-lg mt-7 md:mt-10 px-1.5 md:px-4 lg:px-14 bg-[#FFFBFB]'>
             <div className='w-full flex items-center justify-center'>
-                <Image src={"/Images/drop-resume-icon.png"} width={35} height={35} alt="icon" className='mb-7 -mr-1' />
-                <h2 className='text-4xl font-semibold font-caveat'>Please complete the form below!</h2>
+                <Image src={"/Images/drop-resume-icon.png"} width={35} height={35} alt="icon" className='mb-10 -mr-4 hidden md:block' />
+                <h2 className='text-3xl md:text-4xl font-semibold font-caveat text-center relative px-2'>Please complete the form below!</h2>
             </div>
-            <div className='mt-3 '>
+            <div className='mt-6 md:mt-3'>
                 <div className=" mx-auto">
                     <form onSubmit={handleSubmit} className="">
                         <div className=' flex items-center gap-3'>
-                            <span className=' w-6 h-6 p-2 font-architects bg-yellow rounded-full flex items-center justify-center font-extrabold'>01.</span>
+                            <span className=' w-7 h-7 p-3.5 font-architects bg-yellow rounded-full flex items-center justify-center font-extrabold'>01.</span>
                             What interests you about joining our team? Please also share any unique skills or experiences from your resume that make you a standout candidate.
                         </div>
                         <textarea
@@ -73,23 +111,23 @@ I've attached my resume for your review and would love to discuss how my backgro
 Thank you for considering my application.                            
 Best regards,
 [Your Name]`}
-                            className="w-full h-64 p-4 border rounded resize-none text-sm"
+                            className="w-[92%] xl:w-[98%] border-[#66666659] rounded-xl h-[20rem] md:h-[16.2rem] mx-7 lg:mx-10 mt-2 md:mt-1 py-2 pr-2.5 xl:pr-[35vw] pl-2.5 md:pl-4 border resize-none text-sm outline-none"
                             value={letter}
                             onChange={(e) => setLetter(e.target.value)}
                         />
-                        <div className=' flex items-center gap-3'>
-                            <span className=' w-6 h-6 p-2 font-architects bg-yellow rounded-full flex items-center justify-center font-extrabold'>02.</span>
+                        <div className=' flex items-center gap-3 mt-3'>
+                            <span className=' w-7 h-7 p-3.5 font-architects bg-yellow rounded-full flex items-center justify-center font-extrabold'>02.</span>
                             My availability
                         </div>
-                        <div className="lg:w-[60%] space-y-6 lg:pl-7">
+                        <div className="xl:w-[60%] pl-7 lg:pl-10">
                             <div className="w-full overflow-x-auto overflow-y-hidden h-full">
-                                <table className="w-full min-w-[600px] text-sm text-[#1A212B] border-spacing-y-2 border-separate">
+                                <table className="w-full min-w-[400px] text-sm text-[#1A212B] border-spacing-y-2 border-separate -mt-1 md:-mt-2">
                                     <thead>
                                         <tr>
                                             <th className="font-medium p-2 bg-white flex justify-start items-center rounded-l whitespace-nowrap">
                                                 <div
                                                     className="w-4 h-4 cursor-pointer border-[1.7px] border-gray-700 rounded relative flex items-center justify-center mr-2"
-                                                    onClick={(e) => handleAllToggle(!Object.values(availability).every((day) =>
+                                                    onClick={() => handleAllToggle(!Object.values(availability).every((day) =>
                                                         Object.values(day).every((isAvailable) => isAvailable)
                                                     ))}
                                                 >
@@ -165,23 +203,31 @@ Best regards,
                                     </tbody>
                                 </table>
                             </div>
-
-                            <button
-                                onClick={handleSubmit}
-                                className="px-4 py-2 bg-blue-500 rounded-lg"
-                            >
-                                Submit Availability
-                            </button>
                         </div>
-                        <button type="submit" className="w-full bg-blue-500 tex p-2 rounded hover:bg-blue-600">
+                        <div>
+                            <div className="flex items-center mt-3 text-[#333333]">
+                                <div
+                                    className={`w-4 h-4 cursor-pointer border-[1.7px] border-gray-700  ${isChecked ? "bg-black" : ""
+                                        } rounded-sm relative flex items-center justify-center mr-2`}
+                                    onClick={handleCheckboxToggle}
+                                >
+                                    {isChecked && (
+                                        <Check className="text-white" size={14} strokeWidth={3} />
+                                    )}
+                                </div>
+                                <span>Do you want to follow <b className='font-semibold'>[Business Name]</b> to receive job alerts?</span>
+                            </div>
+                        </div>
+                        {/* <button type="submit" className="w-full bg-red tex p-2 rounded hover:bg-blue-600">
                             Submit
-                        </button>
+                        </button> */}
                     </form>
-
                 </div>
             </div>
         </div>
     )
-}
+})
+
+Section1.displayName = "Section1";
 
 export default Section1

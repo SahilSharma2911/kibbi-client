@@ -18,6 +18,9 @@ const Stepper: React.FC = () => {
     if (pathname === "/resume/drop-resume") {
       setCurrentStep(3);
     }
+    if (pathname === "/resume/your-preferences") {
+      setCurrentStep(4);
+    }
   }, [pathname]);
   const steps: Step[] = [
     { id: 1, label: "Create Your Profile" },
