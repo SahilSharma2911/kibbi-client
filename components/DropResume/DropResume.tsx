@@ -43,7 +43,7 @@ const DropResume = () => {
                 );
             case 2:
                 return (
-                    <div className='pb-20 md:pb-48'>
+                    <div className='pb-20 md:pb-44'>
                         <Section2 />
                     </div>
                 )

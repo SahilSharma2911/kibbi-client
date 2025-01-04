@@ -4,7 +4,7 @@ import React from 'react'
 
 const Section2 = () => {
     return (
-        <div className='pt-6 md:pt-10 pb-10 rounded-lg mt-8 md:mt-10 px-1.5 md:px-4 lg:px-14 bg-[#FFFBFB]'>
+        <div className='pt-6 md:pt-10 pb-14 rounded-lg mt-8 md:mt-10 px-1.5 md:px-4 lg:px-14 bg-[#FFFBFB]'>
 
             {/* Bird image  */}
             <div className=' flex justify-center'>
