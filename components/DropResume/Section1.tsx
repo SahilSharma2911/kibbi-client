@@ -89,7 +89,7 @@ const Section1 = forwardRef<FormRef>((props, ref) => {
     };
 
     return (
-        <div className='pt-6 md:pt-10 pb-7 rounded-lg mt-7 md:mt-10 px-1.5 md:px-4 lg:px-14 bg-[#FFFBFB]'>
+        <div className='pt-6 md:pt-10 pb-7 rounded-lg mt-8 md:mt-10 px-1.5 md:px-4 lg:px-14 bg-[#FFFBFB]'>
             <div className='w-full flex items-center justify-center'>
                 <Image src={"/Images/drop-resume-icon.png"} width={35} height={35} alt="icon" className='mb-10 -mr-4 hidden md:block' />
                 <h2 className='text-3xl md:text-4xl font-semibold font-caveat text-center relative px-2'>Please complete the form below!</h2>
@@ -205,9 +205,9 @@ Best regards,
                             </div>
                         </div>
                         <div>
-                            <div className="flex items-center mt-3 text-[#333333]">
+                            <div className="flex items-center mt-3 text-[#333333] w-full">
                                 <div
-                                    className={`w-4 h-4 cursor-pointer border-[1.7px] border-gray-700  ${isChecked ? "bg-black" : ""
+                                    className={`min-w-4 min-h-4 w-4 h-4 cursor-pointer border-[1.7px] border-gray-700 ${isChecked ? "bg-black" : ""
                                         } rounded-sm relative flex items-center justify-center mr-2`}
                                     onClick={handleCheckboxToggle}
                                 >
