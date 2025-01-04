@@ -16,6 +16,8 @@ export default {
         slate: "#454A5F",
         sky: "#0483F8",
         blue: "#065196",
+        borderSlate:"#A6ACC4"
+
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],

@@ -1,5 +1,6 @@
 import React from 'react'
 import Stepper from '../Resume/Stepper'
+import Form from './Form'
 
 const YourPreferences = () => {
     return (
@@ -9,6 +10,7 @@ const YourPreferences = () => {
                     Tell us about your preferences
                 </h1>
                 <Stepper />
+                <Form/>
             </section>
         </main>
     )

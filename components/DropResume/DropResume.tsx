@@ -4,7 +4,7 @@ import Stepper from '../Resume/Stepper'
 import Section1 from './Section1'
 import Section2 from './Section2'
 import Link from 'next/link'
-// hello
+
 interface FormRef {
     submit: () => void;
 }
@@ -26,7 +26,7 @@ const DropResume = () => {
                 return (
                     <>
                         <Section1 ref={formRef} />
-                        <div className="w-full flex justify-end items-center mt-28">
+                        <div className="w-full flex justify-end items-center mt-16 md:mt-28">
                             <Link href={"/resume/confirm-your-profile"}>
                                 <button className="text-sm bg-[#979797] hover:bg-[#868686] transition duration-300 rounded-lg py-2.5 px-5 text-white mr-3">
                                     Back
@@ -51,12 +51,11 @@ const DropResume = () => {
     return (
         <main className="py-10 font-sans px-[1rem] md:px-[3rem] lg:px-[6rem]">
             <section className="bg-white px-2 md:px-4 py-7 rounded-2xl">
-                <h1 className='font-caveat text-red font-bold text-2xl md:text-3xl pb-6'>
+                <h1 className='font-caveat text-red font-bold text-2xl md:text-3xl pb-6 px-2 md:px-0'>
                     Drop your resume
                 </h1>
                 <Stepper />
-                <Section1 />
-                {/* <Section2 /> */}
+                {renderSection()}
             </section>
         </main>
     )
