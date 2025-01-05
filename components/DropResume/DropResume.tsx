@@ -26,7 +26,6 @@ const DropResume = () => {
                 return (
                     <>
                         <Section1 ref={formRef} />
-                        <div className="w-full flex justify-end items-center mt-16 md:mt-28"=======
                         <div className="w-full flex justify-end items-center mt-16 md:mt-32">
                             <Link href={"/resume/confirm-your-profile"}>
                                 <button className="text-sm bg-[#979797] hover:bg-[#868686] transition duration-300 rounded-lg py-2.5 px-5 text-white mr-3">
