@@ -216,6 +216,7 @@ Best regards,
                                     )}
                                 </div>
                                 <span>Do you want to follow <b className='font-semibold'>[Business Name]</b> to receive job alerts?</span>
+                                <Image src={"/Images/hand.png"} width={16} height={16} alt='' className='ml-3'/>
                             </div>
                         </div>
                         {/* <button type="submit" className="w-full bg-red tex p-2 rounded hover:bg-blue-600">
