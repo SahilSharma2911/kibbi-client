@@ -41,7 +41,7 @@ interface FormValues {
 
 const Form = () => {
 
-  const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, control, setValue, watch, formState: { errors }, reset } = useForm<FormValues>({
     defaultValues: {
       references: [{
         firstName: '',
@@ -65,7 +65,7 @@ const Form = () => {
   });
 
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
-  const [hasFile, setHasFile] = useState(false);
+  // const [hasFile, setHasFile] = useState(false);
 
   const {
     fields: referenceFields,
@@ -99,6 +99,7 @@ const Form = () => {
     if (data.profileFit.other && data.profileFit.otherText) {
       selectedProfileFit.push(data.profileFit.otherText);
     }
+
     const body = {
       file: data.file?.[0],
       videoLink: data.videoLink,
@@ -115,31 +116,66 @@ const Form = () => {
       legallyWorkInCanada: data.legallyWorkInCanada,
       profileFit: selectedProfileFit,
       nationality: data.nationality,
-    }
+    };
 
     console.log("All form Data is here", body);
-  };
 
+    // Reset form to initial values matching the exact FormValues interface
+    reset({
+      file: undefined as unknown as FileList,
+      videoLink: '',
+      websiteLink: '',
+      references: [{
+        firstName: '',
+        lastName: '',
+        jobTitle: '',
+        companyName: '',
+        contact: ''
+      }],
+      willingToRelocate: false,
+      willingToTravel: '',
+      expectedSalary: '',
+      languages: [{
+        isSelected: false,
+        name: 'French',
+        fluency: 'Good'
+      }],
+      lookingForWork: '',
+      dateOfBirth: '',
+      province: '',
+      city: '',
+      legallyWorkInCanada: false,
+      profileFit: {
+        foreignCandidate: false,
+        temporaryWorker: false,
+        other: false,
+        otherText: ''
+      },
+      nationality: ''
+    });
+
+    // Reset video preview and file state
+    setVideoPreview(null);
+    // setHasFile(false);
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setVideoPreview(URL.createObjectURL(file));
-      setHasFile(true);
-      setValue('file', event.target.files as FileList);  // Update form value
+      // setHasFile(true);
+      setValue('file', event.target.files as FileList);
     }
   };
 
   const handleRemoveVideo = () => {
     setVideoPreview(null);
-    setHasFile(false);
+    // setHasFile(false);
     setValue('file', undefined as unknown as FileList);
   };
 
-  // In your file input registration, modify the validation:
-  const fileRegistration = register("file", {
-    required: !hasFile ? "File is required" : false
-  });
+  // Simple registration without validation
+  const fileRegistration = register("file");
 
 
   return (
@@ -155,7 +191,7 @@ const Form = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className=' font-sans font-medium text-[#1E202C]'>
 
-        {/* Resume upload  */}
+        {/* Resume upload */}
         <div className="font-sans text-[1rem] mt-3">
           <h2 className="font-medium">Upload Your Video Resume</h2>
           <div className="px-2 md:px-8 py-4 md:py-8">
@@ -211,13 +247,12 @@ const Form = () => {
                 </label>
               )}
             </div>
-            {errors.file && errors.videoLink && <p className="text-red text-sm ">{errors.file.message}</p>}
           </div>
         </div>
 
         {/* youtube link */}
         <div className="mt-2 w-full">
-          <div className="flex  flex-col lg:flex-row lg:items-center lg:gap-3 w-full">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:gap-3 w-full">
             <label className="block whitespace-nowrap mb-1 md:mb-2">
               or Youtube link
             </label>
@@ -226,17 +261,11 @@ const Form = () => {
                 type="text"
                 id="videoLink"
                 placeholder="http://youtube.com"
-                {...register("videoLink", {
-                  required: "Youtube link is required", // Required validation
-
-                })}
+                {...register("videoLink")}
                 className="border border-[#66666659] rounded-[10px] outline-none w-full py-2 px-5"
               />
             </div>
           </div>
-          {errors.videoLink && errors.file && (
-            <p className="text-red mt-1 text-sm">{errors.videoLink.message}</p>
-          )}
         </div>
 
         {/* Website link */}
@@ -250,7 +279,7 @@ const Form = () => {
               id="websiteLink"
               placeholder="http://youtube.com"
               {...register("websiteLink", {
-                required: "Website link is required", // Add validation rule here
+                required: "Website link is required",
               })}
               className="border border-[#66666659] rounded-[10px] outline-none w-full py-2 px-5"
             />
@@ -612,9 +641,9 @@ const Form = () => {
               </span>
               <div className="relative w-full mt-0.5 font-normal text-[#565656]">
                 <select id="province" className=' border border-[#66666659] rounded-[10px] outline-none w-full p-3.5 appearance-none' {...register("province", { required: "required" })} >
-                  <option value="jaipur">pr1</option>
-                  <option value="jaipur">pr2</option>
-                  <option value="jaipur">pr3</option>
+                  <option value="pr1">pr1</option>
+                  <option value="pr2">pr2</option>
+                  <option value="pr3">pr3</option>
                 </select>
                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
                   <svg
@@ -646,9 +675,9 @@ const Form = () => {
               </span>
               <div className="relative w-full mt-0.5 font-normal text-[#565656]">
                 <select className=' border border-[#66666659] rounded-[10px] outline-none w-full p-3.5 appearance-none' {...register("city", { required: "required" })}>
-                  <option value="jaipur">city1</option>
-                  <option value="jaipur">city2</option>
-                  <option value="jaipur">city3</option>
+                  <option value="city1">city1</option>
+                  <option value="city2">city2</option>
+                  <option value="city3">city3</option>
                 </select>
                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
                   <svg
