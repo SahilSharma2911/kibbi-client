@@ -1,7 +1,8 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 
 type TimeSlot = "Morning" | "Afternoon" | "Evening" | "OverNight";
 type Day = "Mon" | "Tues" | "Wed" | "Thur" | "Sat" | "Fri" | "Sun";
@@ -13,17 +14,15 @@ interface Payload {
     followBusinessName: boolean;
     availability: Availability;
 }
-
-interface FormRef {
-    submit: () => void;
-}
-
-const Section1 = forwardRef<FormRef>((props, ref) => {
+type Section1Props = {
+    onNext: () => void;
+};
+const Section1 = ({ onNext }: Section1Props) => {
     const [letter, setLetter] = useState<string>("");
     const [isChecked, setIsChecked] = useState(false);
     const [submitted, setSubmitted] = useState<Payload[]>([]);
     console.log("submitted data:::", submitted)
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const payload: Payload = {
@@ -32,21 +31,13 @@ const Section1 = forwardRef<FormRef>((props, ref) => {
             availability,
         };
 
-        // console.log(JSON.stringify(payload));
-        setSubmitted((prev) => [...prev, payload]);
+        setSubmitted(prev => {
+            const newState = [...prev, payload];
+            console.log('Form Data:', payload);
+            onNext();
+            return newState;
+        });
     };
-
-    // Expose the submit function to parent
-    useImperativeHandle(ref, () => ({
-        submit: () => {
-            const payload: Payload = {
-                letter,
-                followBusinessName: isChecked,
-                availability,
-            };
-            setSubmitted((prev) => [...prev, payload]);
-        }
-    }));
 
     const days: Day[] = ["Mon", "Tues", "Wed", "Thur", "Sat", "Fri", "Sun"];
     const timeSlots: TimeSlot[] = ["Morning", "Afternoon", "Evening", "OverNight"];
@@ -89,7 +80,7 @@ const Section1 = forwardRef<FormRef>((props, ref) => {
     };
 
     return (
-        <div className='pt-6 md:pt-10 pb-7 rounded-lg mt-8 md:mt-10 px-1.5 md:px-4 lg:px-14 bg-[#FFFBFB]'>
+        <div className='pt-6 md:pt-10 pb-7 rounded-lg mb-[7rem] md:mb-[11rem] mt-8 md:mt-10 px-1.5 md:px-4 lg:px-14 bg-[#FFFBFB] relative'>
             <div className='w-full flex items-center justify-center'>
                 <Image src={"/Images/drop-resume-icon.png"} width={35} height={35} alt="icon" className='mb-10 -mr-4 hidden md:block' />
                 <h2 className='text-3xl md:text-4xl font-semibold font-caveat text-center relative px-2'>Please complete the form below!</h2>
@@ -152,54 +143,63 @@ Best regards,
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {days.map((day) => (
-                                            <tr key={day}>
-                                                <td className="bg-white font-medium p-2 rounded-l whitespace-nowrap">{day}</td>
-                                                {timeSlots.map((slot, index) => (
+                                        {days.map((day) => {
+                                            const allUnticked = Object.values(availability[day]).every(value => !value);
+                                            return (
+                                                <tr key={day}>
                                                     <td
-                                                        key={slot}
-                                                        className={`bg-white p-2 text-center cursor-pointer ${index === timeSlots.length - 1 ? 'rounded-r' : ''}`}
-                                                        onClick={() => handleSlotToggle(day, slot)}
+                                                        className={`font-medium p-2 rounded-l whitespace-nowrap transition-colors duration-300 ${allUnticked ? 'text-[#B3B7BF] font-semibold' : ''
+                                                            }`}
                                                     >
-                                                        <AnimatePresence mode="wait">
-                                                            {availability[day][slot] ? (
-                                                                <motion.div
-                                                                    key="tick"
-                                                                    initial={{ scale: 0, rotate: -180 }}
-                                                                    animate={{ scale: 1, rotate: 0 }}
-                                                                    exit={{ scale: 0, rotate: 180 }}
-                                                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                                                >
-                                                                    <Image
-                                                                        src={`/Images/${slot.toLowerCase()}-tick.png`}
-                                                                        alt={`${slot} tick`}
-                                                                        width={20}
-                                                                        height={20}
-                                                                        className="mx-auto"
-                                                                    />
-                                                                </motion.div>
-                                                            ) : (
-                                                                <motion.div
-                                                                    key="untick"
-                                                                    initial={{ scale: 0, rotate: -180 }}
-                                                                    animate={{ scale: 1, rotate: 0 }}
-                                                                    exit={{ scale: 0, rotate: 180 }}
-                                                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                                                >
-                                                                    <Image
-                                                                        src={`/Images/${slot.toLowerCase()}-untick.png`}
-                                                                        alt={`${slot} untick`}
-                                                                        width={20}
-                                                                        height={20}
-                                                                        className="mx-auto"
-                                                                    />
-                                                                </motion.div>
-                                                            )}
-                                                        </AnimatePresence>
+                                                        {day}
                                                     </td>
-                                                ))}
-                                            </tr>
-                                        ))}
+                                                    {timeSlots.map((slot, index) => (
+                                                        <td
+                                                            key={slot}
+                                                            className={`bg-white p-2 text-center cursor-pointer ${index === timeSlots.length - 1 ? 'rounded-r' : ''
+                                                                }`}
+                                                            onClick={() => handleSlotToggle(day, slot)}
+                                                        >
+                                                            <AnimatePresence mode="wait">
+                                                                {availability[day][slot] ? (
+                                                                    <motion.div
+                                                                        key="tick"
+                                                                        initial={{ scale: 0, rotate: -180 }}
+                                                                        animate={{ scale: 1, rotate: 0 }}
+                                                                        exit={{ scale: 0, rotate: 180 }}
+                                                                        transition={{ duration: 0.3, ease: "easeOut" }}
+                                                                    >
+                                                                        <Image
+                                                                            src={`/Images/${slot.toLowerCase()}-tick.png`}
+                                                                            alt={`${slot} tick`}
+                                                                            width={20}
+                                                                            height={20}
+                                                                            className="mx-auto"
+                                                                        />
+                                                                    </motion.div>
+                                                                ) : (
+                                                                    <motion.div
+                                                                        key="untick"
+                                                                        initial={{ scale: 0, rotate: -180 }}
+                                                                        animate={{ scale: 1, rotate: 0 }}
+                                                                        exit={{ scale: 0, rotate: 180 }}
+                                                                        transition={{ duration: 0.3, ease: "easeOut" }}
+                                                                    >
+                                                                        <Image
+                                                                            src={`/Images/${slot.toLowerCase()}-untick.png`}
+                                                                            alt={`${slot} untick`}
+                                                                            width={20}
+                                                                            height={20}
+                                                                            className="mx-auto"
+                                                                        />
+                                                                    </motion.div>
+                                                                )}
+                                                            </AnimatePresence>
+                                                        </td>
+                                                    ))}
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
@@ -216,18 +216,28 @@ Best regards,
                                     )}
                                 </div>
                                 <span>Do you want to follow <b className='font-semibold'>[Business Name]</b> to receive job alerts?</span>
-                                <Image src={"/Images/hand.png"} width={16} height={16} alt='' className='ml-1.5 md:ml-3'/>
+                                <Image src={"/Images/hand.png"} width={16} height={16} alt='' className='ml-1.5 md:ml-3' />
                             </div>
                         </div>
-                        {/* <button type="submit" className="w-full bg-red tex p-2 rounded hover:bg-blue-600">
-                            Submit
-                        </button> */}
+                        <div className=" flex justify-end py-6 absolute -bottom-[9.2rem] md:-bottom-[12.8rem] right-0">
+                            <Link href={"/resume/confirm-your-profile"}>
+                                <button className="text-sm bg-[#979797] hover:bg-[#868686] transition duration-300 rounded-lg py-2.5 px-5 text-white mr-3">
+                                    Back
+                                </button>
+                            </Link>
+                            <button
+                                type="submit"
+                                className="text-sm bg-[#D9292F] hover:bg-[#b22225] transition duration-300 rounded-lg py-2.5 px-5 text-white"
+                            >
+                                Next
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     )
-})
+}
 
 Section1.displayName = "Section1";
 

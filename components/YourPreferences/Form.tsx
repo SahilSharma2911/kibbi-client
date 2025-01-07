@@ -184,7 +184,7 @@ const Form = () => {
         <div>
           <Image src={"/Images/smallBird.png"} alt='bird' width={50} height={50} />
         </div>
-        <h3 className=' text-[#585E68] font-medium font-sans text-xl'>
+        <h3 className=' text-[#585E68] font-medium font-sans text-xl italic'>
           Tell us about your preferences!
         </h3>
       </div>
@@ -429,7 +429,7 @@ const Form = () => {
         {/* Willing to Travels  */}
         <div className=' mt-6'>
           <div className=' space-y-3'>
-            <span>Willing To Travel?</span>
+            <span>Willingness To Travel?</span>
 
             <div className=' flex flex-wrap gap-4 md:gap-6 cursor-pointer px-3'>
               <label htmlFor="willingNo" className=' flex items-center gap-2 font-normal'>
